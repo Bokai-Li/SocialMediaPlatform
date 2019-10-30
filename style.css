@@ -1,0 +1,60 @@
+html body{
+    background-color:#333A44;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-card {
+    background-color: #181E2A;
+    border-radius: 25px;
+    width: 550px;
+    height:400px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.form {
+    margin: 0;
+    width: 500px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+h2 {
+    color:white;
+    padding-bottom: 20px;
+    left: 100px;
+}
+
+.input {
+    padding-bottom: 20px;
+}
+
+input {
+    background-color: #333A44;
+    border-color: transparent;
+    width: 100%;
+    height:50px;
+}
+
+button {
+    border-radius: 25px;
+    width:100%;
+    height: 50px;
+    font-size: 16px;
+    background-color: cornflowerblue;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    font-size: 16px;
+    opacity: 1; /* Firefox */
+    color:lightgray;
+  }
