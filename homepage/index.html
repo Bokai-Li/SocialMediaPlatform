@@ -3,45 +3,39 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <title>HomePage</title>
 
         <!-- Include links to CSS stylesheets below -->
         <!-- Add link to bulma here -->
         <script src="http://www.cs.unc.edu/~kmp/comp426fall19/jquery-3.4.1.js"></script>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="solid.css">
     </head>
     <body>
         <div class="titleLine">
-            <h1>*名字*</h1>
+            <div class="dropdown" style="float:left;">
+                <button class="dropbtn">&nbsp;:)&nbsp;</button>
+                <div class="dropdown-content" style="left:0;">
+                  <a href="#">Link 1</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a>
+                </div>
+              </div>
+            <h1>UNIQ</h1>
         </div>
             <form>
               <img src="./hyzhang.png" style="width:50px">
-              <textarea name="des"></textarea>
-              <button type="submit">Post</button>
+              <input class="postText" placeholder="It's a great day!"></input>
               <br />
-              <button><i class="fab fa-accessible-icon"></i></button>
-              <button><img src="./hyzhang.png" style="width:10px"></button>
-              <button><img src="./hyzhang.png" style="width:10px"></button>
+              <div class="postOptions">
+                  <button>
+                      <i class="fas fa-camera-retro"></i>
+                  </button>
+                  <button><img src="./hyzhang.png" style="width:10px"></button>
+                  <button type="submit">Post</button>
+              </div>
             </form>
 
-            <div class="dropdown" style="float:left;">
-              <button class="dropbtn">Left</button>
-              <div class="dropdown-content" style="left:0;">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-              </div>
-            </div>
-            
-            <div class="dropdown" style="float:right;">
-              <button class="dropbtn">Right</button>
-              <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-              </div>
-            </div>
             
     </body>
 </html>

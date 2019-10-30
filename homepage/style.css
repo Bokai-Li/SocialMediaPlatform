@@ -1,5 +1,24 @@
+body {
+    text-align: center;
+    background-color: #333a44;
+}
+.titleLine{
+    color:white
+}
+.postOptions{
+    float: right;
+}
+.postText{
+    border-radius: 25px;
+    background: white;
+    border: 2px solid white;
+    padding: 20px;
+    width: 800px;
+    height: 150px; 
+}
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: black;
+    border-radius: 15px;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -31,4 +50,4 @@
   
   .dropdown-content a:hover {background-color: #f1f1f1;}
   .dropdown:hover .dropdown-content {display: block;}
-  .dropdown:hover .dropbtn {background-color: #3e8e41;}
+  .dropdown:hover .dropbtn {background-color: gray;}
