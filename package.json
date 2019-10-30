@@ -18,6 +18,8 @@
   "homepage": "https://github.com/bokai247/SocialMediaPlatform#readme",
   "dependencies": {
     "browser-sync": "^2.26.7",
-    "jquery": "^3.4.1"
+    "bulma": "^0.8.0",
+    "jquery": "^3.4.1",
+    "three-orbitcontrols-ts": "^0.1.2"
   }
 }
