@@ -1,0 +1,256 @@
+
+span {
+    font-weight: bold;
+}
+
+#logoimg {
+    width: 188px;
+    height: 100px;
+    padding-left: 25px;
+
+}
+
+figure {
+    display: inline-block;
+    width: 33.3%;
+}
+
+.menu {
+    width: 20px;
+    height: 3px;
+    background-color: black;
+    margin: 3px 0;
+}
+
+.dropbtn {
+    background-color:whitesmoke;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-right:0;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    float: right;
+    padding-top: 35px;
+    padding-right: 25px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.icon {
+    float: left;
+}
+.main-title {
+    background-image: url(https://media.giphy.com/media/l0HelH6WiHNjQCABa/giphy.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 550px;
+}
+
+#main {
+    text-align: center;
+    font-size: 90px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color:white;
+    padding-top:120px;
+}
+
+.sub {
+    text-align:center;
+    font-size: x-large;
+    color:white;
+}
+
+a {
+    display:block;
+    text-align:center;
+}
+
+.new {
+    padding: 10px;
+    padding-left: 100px;
+    margin: auto;
+    width: 1000px;
+}
+
+#newpost {
+    margin-top: 5px; 
+}
+
+#cancelpost {
+    margin-top: 5px;
+}
+
+.tweets {
+    padding: 10px;
+    padding-left: 100px;
+    padding-right: 100px;
+    
+}
+
+.edit {
+    margin: 5px;
+    float: right;
+}
+
+.remove {
+    margin: 5px;
+    float: right;
+}
+
+.update {
+    float:right;
+    margin:5px;
+}
+
+.retweet {
+    float:right;
+    margin:5px;
+}
+
+.reply {
+    float:right;
+    margin:5px;
+}
+
+.three-button {
+    transform: translate(-50%, -50%);
+    width: 75px;
+    height: 20px;
+    background: #fff;
+    border-radius: 75px;
+    text-align: center;
+    font-size: 11px;
+    text-decoration: none;
+    color: #262626;
+    transition: 0.5s;
+    text-transform: uppercase;
+}
+
+.showreply {
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 20px;
+    background: #fff;
+    border-radius: 75px;
+    text-align: center;
+    font-size: 11px;
+    text-decoration: none;
+    color: #262626;
+    transition: 0.5s;
+    text-transform: uppercase;
+}
+
+.replytitle {
+    border-style: solid;
+    border-width: thin;
+    padding-left: 5px;
+    background-color: steelblue;
+    color: white;
+    font-weight: bolder;
+}
+
+.like {
+    transform: translate(-50%, -50%);
+    width: 75px;
+    height: 20px;
+    background: #fff;
+    border-radius: 75px;
+    text-align: center;
+    font-size: 11px;
+    text-decoration: none;
+    color: #262626;
+    transition: 0.5s;
+    text-transform: uppercase;
+}
+
+.card {
+    height: 100%;
+    width:100%;
+}
+.active {
+    background: transparent;
+    border: none;
+    color:#fff;
+}
+
+.like:before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #ff0047;
+    width: 50%;
+    height: 100%;
+    transition: 0.5s;
+    z-index: -1;
+    transform: translateX(-50px) rotate(-325deg);
+    opacity: 0;
+}
+
+.active:before{
+    left: 8px;
+    transform: translateX(0) rotate(35deg);
+    border-bottom-left-radius: 75px;
+    border-top-left-radius: 75px;
+    opacity:1;
+}
+
+.like:after{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #ff0047;
+    width: 50%;
+    height: 100%;
+    transition: 0.5s;
+    z-index: -1;
+    transform: translateX(50px) rotate(-325deg);
+    opacity: 0;
+}
+
+.active:after{
+    right:8px;
+    transform: translateX(0) rotate(-35deg);
+    border-bottom-right-radius: 75px;
+    border-top-right-radius: 75px;
+    opacity:1;
+}
