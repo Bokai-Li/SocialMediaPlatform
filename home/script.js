@@ -16,34 +16,58 @@ const handlePostPress = function(event){
 
 const renderTweet = function(tweet) {
     return `
-        <div class="column is-6" id ="${tweet.id}">   
-            <div class="card">
-                <div class="card-content">
-                    <div class="content">    
-                        <p><span>${tweet.author}</span></p>    
-                        <p>${tweet.body}</p>
-                    </div>
+        
+    <div class="card" id ="${tweet.id}">
+        <div class="card-content">
+            <div class="content">
+                <img class="headimg" src="wyb.JPG" alt="myimage">
+                &nbsp;&nbsp;
+                <span class="author">
+                    ${tweet.author}
+                </span>  
+                <p>${tweet.body}</p>
+            </div>
 
-                    <div class = "content has-text-right" id="button">
-                        <button class="like" id="like${tweet.id}">Like(${tweet.likeCount})</button>
-                        <button class="three-button" id="reply${tweet.id}">reply(${tweet.replyCount})</button>
-                        <button class="three-button" id="retweet${tweet.id}">retweet(${tweet.retweetCount})</button>
-                        <button class="three-button" id="show${tweet.id}">replies</button>
+            <div class="content has-text-left">
+                @Shanghai-Xuhui
+                <br>
+                8:45 11.29.2019
+            </div>
+    
+            <div class="content with-border" >
+                    <div class="columns" id="button">
+                            <div class="column is-4">
+                                <button class="like three-button " id="like${tweet.id}">
+                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
+                                </button>
+                            </div>
+                            <div class="column is-4">
+                                <button class="three-button" id="reply${tweet.id}">
+                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
+                                </button>
+                            </div>
+                            <div class="column is-4">
+                                <button class="three-button" id="retweet${tweet.id}">
+                                    <i class="fas fa-retweet"></i> Retweet (${tweet.retweetCount})
+                                </button>
+                            </div>
                     </div>
+            </div>
+            
 
-                    <div class="content replyblockbefore" id="replycontent${tweet.id}">
 
-                    </div>
-                </div>
+            <div class="content replyblockbefore" id="replycontent${tweet.id}">
+
             </div>
         </div>
+    </div>
     `;
 };
 
 const renderMyTweet = function(tweet){
     return `
-        <div class="column is-6" id ="${tweet.id}">   
-            <div class="card">
+     
+            <div class="card" id ="${tweet.id}">
                 <div>
                     <button class="button is-success edit" id="edit${tweet.id}">edit</button> 
                     <button class="button is-success remove" id="delete${tweet.id}">delete</button> 
@@ -67,7 +91,7 @@ const renderMyTweet = function(tweet){
                     </div>
                 </div>
             </div>
-        </div>
+
     `;
 }
 
@@ -196,12 +220,11 @@ async function view() {
 
         $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
             let retweet_form = `
-            <div class="column is-4">   
+
                 <div class="card">
                     <textarea id="readyretweet" class="textarea" maxlength="280">${body}</textarea>
                     <button class="button is-success retweet">retweet</button>
                 </div>
-            </div>
             `;
             $(`#${id}`).replaceWith(retweet_form);
             $('.retweet').on('click', function(){
@@ -211,12 +234,10 @@ async function view() {
 
         $(`#reply${id}`).click(function(){                    // allow user to reply to tweets
             let reply_form = `
-            <div class="column is-4">   
                 <div class="card">
                     <textarea id="readyreply" class="textarea" maxlength="280" placeholder="${body}"></textarea>
                     <button class="button is-success reply">reply</button>
                 </div>
-            </div>
             `;
             $(`#${id}`).replaceWith(reply_form);
             $('.reply').on('click', function(){
@@ -224,25 +245,17 @@ async function view() {
             });
         }); 
 
-        let isshown = false;
-        $(`#show${id}`).click(function(){
-            if(!isshown){
-                if(tweets[i].replyCount > 0){
-                    let replies = detail.replies;
-                    $(`#replycontent${id}`).append(`<p class="replytitle">Replies</p>`);
-                    for(let j = 0; j < replies.length; j++){
-                        let author = replies[j].author;
-                        let histweet = replies[j].body;
-                        $(`#replycontent${id}`).append(`<p><span>${author}:</span> ${histweet}</p>`);
-                    }
-                }
-                isshown = true;
-            }else{
-                $(`#replycontent${id}`).empty();
-                isshown = false;
+
+        
+        if(tweets[i].replyCount > 0){
+            let replies = detail.replies;
+            for(let j = 0; j < replies.length; j++){
+                let author = replies[j].author;
+                let histweet = replies[j].body;
+                $(`#replycontent${id}`).append(`<img class="replyimg" src="wyb.JPG" alt="myimage">
+                                                <span class="replyauthor">${author}: ${histweet}</span><br>`);
             }
-            
-        });
+        }
         if(tweets[i].isMine){
             $(`#edit${id}`).on('click', function(){                  // allow user to edit their tweets    
                 let form = `
