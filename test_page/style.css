@@ -1,0 +1,149 @@
+.test-questions.comp {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1100px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    padding: 15px;
+    color: #d3d3d3;
+    background-color:rgb(64, 79, 88);
+}
+
+.question {
+    padding: 35px 0 20px;
+    width: 100%;
+    max-width: 800px;
+    border-bottom:1px solid #dcdcdc
+}
+
+.statement {
+    color: #95a2bb;
+    font-weight: 600;
+    text-align: center;
+    line-height:1.5
+}
+
+.decision {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin:30px 0 15px
+}
+
+.caption {
+    font-weight: 600;
+    font-size: .8em;
+    text-transform:uppercase
+}
+
+.caption.agree {
+    color:#59a6ffbe
+}
+
+.caption.disagree {
+    color:#d65b6fb4
+}
+
+.options {
+    -webkit-box-flex: 0;
+    flex: 0 0 100%;
+    margin: 0 15px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    justify-content:space-between
+}
+
+.options .option {
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content:center;
+    flex: 0 0 35px;
+    max-width: 35px;
+    height:35px
+}
+
+.far.fa-check::before {
+    content:" "
+}
+
+.options .option.agree {
+    border:2px solid #59a6ffbe
+}
+
+.options .option.agree.active, .test-questions.comp .question .decision .options .option.agree:hover {
+    background-color:#59a6ffbe
+}
+ 
+.options .option.neutral {
+    border: 2px solid #9b9faa;
+    -webkit-box-flex: 0;
+}
+
+.options .option.neutral.active, .test-questions.comp .question .decision .options .option.neutral:hover {
+    background-color:#9b9faa
+}
+
+.options .option.disagree {
+    border:2px solid #d65b6fb4
+}
+
+.options .option.disagree.active, .test-questions.comp .question .decision .options .option.disagree:hover {
+    background-color:#d65b6fb4
+}
+
+#link {
+    margin: auto;
+    width: 200px;
+    padding-top: 30px;
+}
+
+body {
+    background-color:#333A44;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    font-family: Montserrat, Open Sans, Helvetica Neue, Arial;
+    color: #d3d3d3;
+    font-size: 3em;
+    margin: 30px 0 20px;
+    line-height: 1.3;
+}
+
+.question {
+    font-family: Montserrat, Open Sans, Helvetica Neue, Arial;
+    font-size:1.5em
+}
+
+.subtitle {
+    font-family: Montserrat, Open Sans, Helvetica Neue, Arial;
+    color: #d3d3d3;
+    font-size: 1.5em;
+    margin: 30px 0 20px;
+    line-height: 1.3;
+}
+
+#title {
+    text-align: center;
+}
