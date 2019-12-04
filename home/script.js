@@ -51,13 +51,6 @@ const renderTweet = function(tweet) {
                                     <i class="fas fa-retweet"></i> Retweet (${tweet.retweetCount})
                                 </button>
                             </div>
-                            <!--
-                                <div class="column is-3">
-                                <button class="button three-button" id="show${tweet.id}">replies</button>
-                            </div>
-                            -->
-                            
-                            
                     </div>
             </div>
             
@@ -68,8 +61,6 @@ const renderTweet = function(tweet) {
             </div>
         </div>
     </div>
-            
-        
     `;
 };
 
@@ -100,6 +91,7 @@ const renderMyTweet = function(tweet){
                     </div>
                 </div>
             </div>
+
     `;
 }
 
@@ -228,12 +220,11 @@ async function view() {
 
         $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
             let retweet_form = `
-               
+
                 <div class="card">
                     <textarea id="readyretweet" class="textarea" maxlength="280">${body}</textarea>
                     <button class="button is-success retweet">retweet</button>
                 </div>
-           
             `;
             $(`#${id}`).replaceWith(retweet_form);
             $('.retweet').on('click', function(){
@@ -243,18 +234,17 @@ async function view() {
 
         $(`#reply${id}`).click(function(){                    // allow user to reply to tweets
             let reply_form = `
-              
                 <div class="card">
                     <textarea id="readyreply" class="textarea" maxlength="280" placeholder="${body}"></textarea>
                     <button class="button is-success reply">reply</button>
                 </div>
-            
             `;
             $(`#${id}`).replaceWith(reply_form);
             $('.reply').on('click', function(){
                 reply(id);
             });
         }); 
+
 
         
         if(tweets[i].replyCount > 0){
@@ -266,8 +256,6 @@ async function view() {
                                                 <span class="replyauthor">${author}: ${histweet}</span><br>`);
             }
         }
-            
-            
         if(tweets[i].isMine){
             $(`#edit${id}`).on('click', function(){                  // allow user to edit their tweets    
                 let form = `
