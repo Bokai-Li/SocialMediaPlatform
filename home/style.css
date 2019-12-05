@@ -1,0 +1,236 @@
+
+.author {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.replyauthor {
+    background-color: #dde4e6;
+    padding:5px;
+    border-radius: 10px;
+}
+
+
+.has-text-left {
+    font-size: smaller;
+    font-style: italic;
+}
+
+.with-border {
+    border-left: none;
+    border-right: none;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-color: rgb(226, 222, 222);
+    border-top-width: 1px;
+    border-bottom-color: rgb(226, 222, 222);
+    border-bottom-width: 1px;
+    padding: 5px;
+}
+
+
+#logoimg {
+    width: 188px;
+    height: 100px;
+    padding-left: 25px;
+
+}
+
+figure {
+    display: inline-block;
+    width: 33.3%;
+}
+
+.menu {
+    width: 20px;
+    height: 3px;
+    background-color: black;
+    margin: 3px 0;
+}
+
+.dropbtn {
+    background-color:whitesmoke;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-right:0;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    float: right;
+    padding-top: 35px;
+    padding-right: 25px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+.icon {
+    float: left;
+}
+.main-title {
+    background-image: url(https://media.giphy.com/media/l0HelH6WiHNjQCABa/giphy.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 550px;
+}
+
+#main {
+    text-align: center;
+    font-size: 90px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color:white;
+    padding-top:120px;
+}
+
+.sub {
+    text-align:center;
+    font-size: x-large;
+    color:white;
+}
+
+a {
+    display:block;
+    text-align:center;
+}
+
+.new {
+    padding: 10px;
+    padding-left: 100px;
+    margin: auto;
+    width: 1000px;
+}
+
+#newpost {
+    margin-top: 5px; 
+}
+
+#cancelpost {
+    margin-top: 5px;
+}
+
+.tweets {
+    padding: 10px;
+    padding-left: 100px;
+    padding-right: 30px;    
+}
+
+.panels {
+    padding: 10px;
+    padding-right: 100px;  
+}
+
+.edit {
+    margin: 5px;
+    float: right;
+}
+
+.remove {
+    margin: 5px;
+    float: right;
+}
+
+.update {
+    float:right;
+    margin:5px;
+}
+
+.retweet {
+    margin:5px;
+}
+
+.reply {
+    margin:5px;
+}
+
+.headimg {
+    width: 64px;
+    height: 64px;
+}
+
+
+
+.replytitle {
+    border-style: solid;
+    border-width: thin;
+    padding-left: 5px;
+    background-color: steelblue;
+    color: white;
+    font-weight: bolder;
+}
+
+
+
+.card {
+    width:100%;
+    margin: 5px;
+}
+
+.active {
+    background: transparent;
+    border: none;
+    color: red;
+}
+
+.three-button {
+   
+    border: none;
+
+    padding: 12px 16px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.is-4 {
+    text-align: center;
+}
+
+.replyimg {
+    width: 32px;
+    height: 32px;
+    border-radius: 20px;
+}
+
+.panel-heading{
+    background-color: #362f81;
+    color:white;
+}
+
+#recommend {
+    margin-bottom: 30px;
+}
