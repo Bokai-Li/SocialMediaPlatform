@@ -4,11 +4,11 @@ $(function() {
     const $message = $('#message');
     $btn.click(async function(e){
         e.preventDefault()
-        passval = $('#password').serializeArray()[0].value
+        passval = $('#password1').serializeArray()[0].value
         nameval = $('#username').serializeArray()[0].value
         const response = await axios({
             method: 'POST',
-            url: 'http://localhost:3000/account/login',
+            url: 'http://localhost:3000/account/create',
             data: {
                 "name": nameval,
                 "pass": passval,
