@@ -14,18 +14,20 @@
     <body>
 
         <div id="login-card">
-            <div class="form">
+            <div class="form" id="login-form">
                 <h2>Login to your account</h2>
                 <div class="input">
-                    <input type="text" name ="username" placeholder="Phone, Email, or Username">
+                    <input id="username" type="text" name ="username" placeholder="Phone, Email, or Username">
                 </div>
                 <div class="input">
-                    <input type="text" name ="password" placeholder="Password">
+                    <input id="password" type="text" name ="password" placeholder="Password">
                 </div>
                 <div class="button">
-                    <button type="submit" style="color:white">Log In</button>
+                    <button id="submitbtn" type="submit" style="color:white">Log In</button>
                 </div>                             
               </div>
         </div>
     </body>
+    <script src="node_modules/axios/dist/axios.js"></script>
+    <script src="engine.js"></script>
 </html>
