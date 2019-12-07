@@ -14,11 +14,18 @@ body{
 /* } */ 
 
 #location{
-    font-size: 1em;
+    font-size: 120%;
     font-family: 'Lexend Deca', sans-serif;
+    color:white;
 }
 
 .button{
     font-size: 1em;
     font-family: 'Lexend Deca', sans-serif;
 }
+
+.users:hover {
+    color: #b19cd9;
+    cursor: grab;
+    /* background-color:#FFFFFF; */
+  }
