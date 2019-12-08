@@ -1,0 +1,31 @@
+body{
+    background-image:url(./galaxy.jpg)
+}
+
+/* #canvas{
+    float:right;
+}
+
+#location{
+    display: inline-block;
+    width:200px;
+    /* height:100%; */
+    /* display: flex; */
+/* } */ 
+
+#location{
+    font-size: 120%;
+    font-family: 'Lexend Deca', sans-serif;
+    color:white;
+}
+
+.button{
+    font-size: 1em;
+    font-family: 'Lexend Deca', sans-serif;
+}
+
+.users:hover {
+    color: #b19cd9;
+    cursor: grab;
+    /* background-color:#FFFFFF; */
+  }
