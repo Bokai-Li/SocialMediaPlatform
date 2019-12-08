@@ -1,8 +1,10 @@
 
 const handleNewButtonPress = function(event) {
     $(`<textarea id="writenew" class="textarea" maxlength="280" placeholder="Create your new tweet here (max 280 characters)"></textarea>
-       <button id="newpost" class="button is-danger">Post</button>
-       <button id="cancelpost" class="button is-warning">Cancel</button>
+       <button id="newpost" class="button is-danger">
+            <i class="fas fa-blog"></i> Post
+        </button>
+       <button id="cancelpost" class="button is-warning cancel">Cancel</button>
        `).appendTo(".new");
     $('#newpost').on('click', handlePostPress);
     $('#cancelpost').on('click', function(){
@@ -67,32 +69,64 @@ const renderTweet = function(tweet) {
 const renderMyTweet = function(tweet){
     return `
      
-            <div class="card" id ="${tweet.id}">
-                <div>
-                    <button class="button is-success edit" id="edit${tweet.id}">edit</button> 
-                    <button class="button is-success remove" id="delete${tweet.id}">delete</button> 
-                </div>
-                
-                <div class="card-content">  
-                    <div class="content">  
-                        <p>${tweet.author}</p>
-                        <p>${tweet.body}</p>
-                    </div>
-
-                    <div class = "content has-text-right" id="button">
-                        <button class="like" id="like${tweet.id}">Like(${tweet.likeCount})</button>
-                        <button class="three-button" id="reply${tweet.id}">reply(${tweet.replyCount})</button>
-                        <button class="three-button" id="retweet${tweet.id}">retweet(${tweet.retweetCount})</button>
-                        <button class="three-button" id="show${tweet.id}">replies</button>
-                    </div>
-
-                    <div class="content replyblockbefore" id="replycontent${tweet.id}">
-                    
-                    </div>
-                </div>
+    <div class="card" id ="${tweet.id}">
+        <div class="card-content">
+            <div class="content">
+                <img class="headimg" src="wyb.JPG" alt="myimage">
+                &nbsp;&nbsp;
+                <span class="author">
+                    ${tweet.author}
+                </span>  
+                <p>${tweet.body}</p>
             </div>
 
-    `;
+            <div class="content has-text-left">
+                @Shanghai-Xuhui
+                <br>
+                8:45 11.29.2019
+            </div>
+
+            <div class="content with-border" >
+                    <div class="columns" id="button">
+                            <div class="column is-3">
+                                <button class="like three-button " id="like${tweet.id}">
+                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
+                                </button>
+                            </div>
+                            <div class="column is-3">
+                                <button class="three-button" id="reply${tweet.id}">
+                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
+                                </button>
+                            </div>
+                            <div class="column is-3">
+                                <button class="three-button" id="retweet${tweet.id}">
+                                    <i class="fas fa-retweet"></i> Retweet (${tweet.retweetCount})
+                                </button>
+                            </div>
+                            <div class="column is-2">
+                                <button class="three-button" id="edit${tweet.id}">
+                                    <i class="fas fa-user-edit"></i> Edit
+                                </button>
+                            </div>
+                            <div class="column is-1">
+                                <button class="three-button" id="delete${tweet.id}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+
+                    </div>
+            </div>
+
+            <div class="content replyblockbefore" id="replycontent${tweet.id}">
+
+            </div>
+        </div>
+    </div>
+`;
+
+            
+
+   
 }
 
 async function readTweets(id){
@@ -106,13 +140,13 @@ async function readTweets(id){
 
 async function postTweets(){
     const result = await axios({
-        method: 'post',
-        url: 'https://comp426fa19.cs.unc.edu/a09/tweets',
-        withCredentials: true,
+        method: 'POST',
+        url: 'http://localhost:3000/private',
         data: {
-          body: $("#writenew").val()
+          "tweet": $("#writenew").val()
         },
     });
+    console.log(result);
 }
 
 async function retweet(id){
@@ -221,27 +255,36 @@ async function view() {
         $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
             let retweet_form = `
 
-                <div class="card">
+                <div class="card" id="rtcard${id}">
                     <textarea id="readyretweet" class="textarea" maxlength="280">${body}</textarea>
-                    <button class="button is-success retweet">retweet</button>
+                    <button class="button is-link retweet">retweet</button>
+                    <button id="cancelretweet" class="button is-warning cancel">Cancel</button>
                 </div>
             `;
-            $(`#${id}`).replaceWith(retweet_form);
+            $(retweet_form).insertAfter(`#${id}`);
             $('.retweet').on('click', function(){
                 retweet(id);
             });
+            $('#cancelretweet').on('click', function(){
+                $(`#rtcard${id}`).remove();
+            });
+
         }); 
 
         $(`#reply${id}`).click(function(){                    // allow user to reply to tweets
             let reply_form = `
-                <div class="card">
+                <div class="card" id="rpcard${id}">
                     <textarea id="readyreply" class="textarea" maxlength="280" placeholder="${body}"></textarea>
                     <button class="button is-success reply">reply</button>
+                    <button id="cancelreply" class="button is-warning cancel">Cancel</button>
                 </div>
             `;
-            $(`#${id}`).replaceWith(reply_form);
+            $(reply_form).insertAfter(`#${id}`);
             $('.reply').on('click', function(){
                 reply(id);
+            });
+            $('#cancelreply').on('click', function(){
+                $(`#rpcard${id}`).remove();
             });
         }); 
 
@@ -256,20 +299,25 @@ async function view() {
                                                 <span class="replyauthor">${author}: ${histweet}</span><br>`);
             }
         }
+
+        // allow user to edit their tweets   
         if(tweets[i].isMine){
-            $(`#edit${id}`).on('click', function(){                  // allow user to edit their tweets    
+            $(`#edit${id}`).on('click', function(){                   
                 let form = `
-                    <div class="column is-4">   
-                        <div class="card">
-                            <textarea id="underedit" class="textarea" maxlength="280">${body}</textarea>
-                            <button class="button is-success update">Update</button>
-                        </div>
-                    </div>
+                <div class="card" id="card${id}">
+                    <textarea id="underedit" class="textarea" maxlength="280" placeholder="${body}"></textarea>
+                    <button class="button is-link update">Update</button>
+                    <button id="canceledit" class="button is-warning cancel">Cancel</button>
+                 </div>
                 `;
-                $(`#${id}`).replaceWith(form);
+                $(form).insertAfter(`#${id}`);
                 $('.update').on('click', function(){
                     updateTweets(id);
                 });
+                $('#canceledit').on('click', function(){
+                    $(`#card${id}`).remove();
+                });
+                
             });
 
             $(`#delete${id}`).on('click', function(){

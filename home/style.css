@@ -140,7 +140,7 @@ a {
     margin-top: 5px; 
 }
 
-#cancelpost {
+.cancel {
     margin-top: 5px;
 }
 
@@ -155,18 +155,7 @@ a {
     padding-right: 100px;  
 }
 
-.edit {
-    margin: 5px;
-    float: right;
-}
-
-.remove {
-    margin: 5px;
-    float: right;
-}
-
 .update {
-    float:right;
     margin:5px;
 }
 
@@ -208,15 +197,26 @@ a {
 }
 
 .three-button {
-   
     border: none;
 
-    padding: 12px 16px;
+    
     font-size: 14px;
     cursor: pointer;
 }
 
 .is-4 {
+    text-align: center;
+}
+
+.is-3 {
+    text-align: center;
+}
+
+.is-2 {
+    text-align: center;
+}
+
+.is-1 {
     text-align: center;
 }
 
@@ -233,4 +233,14 @@ a {
 
 #recommend {
     margin-bottom: 30px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
+
+#sticky{
+    position: -webkit-sticky;
+    position: sticky;
+    top: 10px;
+}
+
