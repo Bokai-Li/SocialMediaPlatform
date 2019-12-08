@@ -1,3 +1,4 @@
+
 $(function () {
     loadDom();
 });
@@ -54,14 +55,14 @@ async function submit(e){
         }
     });
     let similar = new Array(10);
-    const private = await axios({
+    const p = await axios({
         method: 'GET',
         url: 'http://localhost:3000/private',
     })
     console.log(response);
 }
 
-function record(e) {
+async function record(e) {
     let clas = e.currentTarget.className.split(" ")[1];
     let id = e.currentTarget.id;
     let question = id.split(":")[1], option = id.split(":")[3];
