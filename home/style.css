@@ -236,6 +236,13 @@ a {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    overflow-y: auto;
+    height: 250px;
+}
+
+#findfriend {
+    overflow-y: auto;
+    height: 250px;
 }
 
 #sticky{
@@ -243,4 +250,6 @@ a {
     position: sticky;
     top: 10px;
 }
+
+
 
