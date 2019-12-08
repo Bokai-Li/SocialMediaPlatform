@@ -1,48 +1,35 @@
-const renderTweet = function(tweet) {
-    return `    
-    <div class="card" id ="${tweet.id}">
-        <div class="card-content">
-            <div class="content">
-                <img class="headimg" src="wyb.JPG" alt="myimage">
-                &nbsp;&nbsp;
-                <span class="author">
-                    ${tweet.author}
-                </span>  
-                <p>${tweet.body}</p>
-            </div>
-
-            <div class="content has-text-left">
-                @Shanghai-Xuhui
-                <br>
-                8:45 11.29.2019
-            </div>
-    
-            <div class="content with-border" >
-                    <div class="columns" id="button">
-                            <div class="column is-4">
-                                <button class="like three-button " id="like${tweet.id}">
-                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
-                                </button>
-                            </div>
-                            <div class="column is-4">
-                                <button class="three-button" id="reply${tweet.id}">
-                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
-                                </button>
-                            </div>
-                            <div class="column is-4">
-                                <button class="three-button" id="retweet${tweet.id}">
-                                    <i class="fas fa-retweet"></i> Retweet (${tweet.retweetCount})
-                                </button>
-                            </div>
-                    </div>
-            </div>
-            <div class="content replyblockbefore" id="replycontent${tweet.id}">
-
-            </div>
+export const renderHeroCard = function(hero) {
+    // TODO: Copy your code from a04 to render the hero card
+    // TODO: Generate HTML elements to represent the hero
+    // TODO: Return these elements as a string, HTMLElement, or jQuery object
+    // Example: return `<div>${hero.name}</div>`;
+    return `
+  <div class="column is-one-third heroCard" id="${hero.id}Card">
+    <div class="card">
+      <div class="card-image has-text-centered" style="background-color: ${hero.backgroundColor}">
+        <br>
+        <figure class="image is-128x128 center" >
+          <img src="${hero.img}" alt="Placeholder image" class="roundBorder">
+        </figure>
+        <br>
+        <h2 class="title is-2" style="color:${hero.color}">${hero.name}</h2>
+        <br>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <h5 class="subtitle is-4 has-text-grey has-text-weight-bold">${hero.subtitle}</h5>
+          <p class="thick" > <span style="font-weight:bold">Alter ego: </span>${hero.first} ${hero.last}</p >
+          <p class="thick" > <span style="font-weight:bold">First appearance:</span> ${hero.firstSeen}</p >
+          <p> <span style="font-weight:bold">Short Description: <br /></span>${hero.description} </p >
+          <br>
+          <button class="button is-dark is-pulled-right editButton" id="${hero.last}" type="button">Edit</button>
+          <br>
         </div>
+      </div>
     </div>
-    `;
+  </div>`
 };
+
 
 const renderMyTweet = function(tweet) {
     return `

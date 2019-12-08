@@ -12,7 +12,6 @@ $(function() {
         passval2 = $('#password2').serializeArray()[0].value;
 
         if ($('#password1').val().length >= 8) {
-            alert($('#password1').val().length);
             if (passval == passval2) {
                 const response = await axios({
                     method: 'POST',
@@ -29,8 +28,16 @@ $(function() {
                     }
                 });
                 console.log(response);
+                const response2 = await axios({
+                    method: 'POST',
+                    url: 'http://localhost:3000/account/login',
+                    data: {
+                        "name": nameval,
+                        "pass": passval,
+                    }
+                });
                 if (response.status == 200) {
-                    window.location.replace("../test_page/index.html?username=" + nameval)
+                    window.location.replace("../test_page/index.html?token=" + response2.data.jwt)
                 }
             } else {
                 document.getElementById("message").innerHTML = "Sorry! Two password input does not match!";
