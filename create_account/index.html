@@ -18,25 +18,37 @@
             <h2>Create a new account</h2>
             <h4>&nbsp&nbspUsername</h4>
             <div class="input">
-                <input id="username" type="text" name="username" type="text" placeholder="John Doe">
+                <input id="username" name="username" type="text" placeholder="John Doe" required>
+            </div>
+            <h4>&nbsp&nbspCountry</h4>
+            <div class="input">
+                <input id="country" name="country" type="text" placeholder="United States" required>
+            </div>
+            <h4>&nbsp&nbspCity</h4>
+            <div class="input">
+                <input id="city" name="city" type="text" placeholder="Chapel Hill" required>
             </div>
             <h4>&nbsp&nbspPhone Number</h4>
             <div class="input">
-                <input id="phoneNumber" type="text" name="phoneNumber" type="tel" placeholder="(123) 456-7890">
+                <input id="phoneNumber" name="phoneNumber" type="tel" placeholder="(123) 456-7890" required>
             </div>
             <h4>&nbsp&nbspEmail Address</h4>
             <div class="input">
-                <input id="email" type="text" name="email" type="email" placeholder="johndoe@aha.com">
+                <input id="email" name="email" type="email" placeholder="johndoe@gmail.com" required>
             </div>
             <h4>&nbsp&nbspPassword</h4>
             <div class="input">
-                <input id="password1" type="text" name="password" type="password" placeholder="Password">
+                <input id="password1" name="password1" type="password" placeholder="123456" required>
             </div>
+            <input id="checkbox1" type="checkbox" onclick="showPassword1()"><span style="font-size: 13px;">Show Password</span>
             <h4>&nbsp&nbspRetype Password</h4>
             <div class="input">
-                <input id="password2" type="text" name="password" type="password" placeholder="Retype Password">
+                <input id="password2" name="password2" type="password" placeholder="123456" required>
             </div>
+            <input id="checkbox2" type="checkbox" onclick="showPassword2()"><span style="font-size: 13px;">Show Password</span>
             <br>
+            <p id="message"></p>
+
             <div class="button">
                 <button id="submitbtn" type="submit">Create Account</button>
             </div>
@@ -47,5 +59,24 @@
 
 <script src="../node_modules/axios/dist/axios.js"></script>
 <script src="script.js"></script>
+<script>
+    function showPassword1() {
+        var x = document.getElementById("password1");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+    function showPassword2() {
+        var x = document.getElementById("password2");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
 
 </html>
