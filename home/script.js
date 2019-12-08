@@ -140,13 +140,13 @@ async function readTweets(id){
 
 async function postTweets(){
     const result = await axios({
-        method: 'post',
-        url: 'https://comp426fa19.cs.unc.edu/a09/tweets',
-        withCredentials: true,
+        method: 'POST',
+        url: 'http://localhost:3000/private',
         data: {
-          body: $("#writenew").val()
+          "tweet": $("#writenew").val()
         },
     });
+    console.log(result);
 }
 
 async function retweet(id){
