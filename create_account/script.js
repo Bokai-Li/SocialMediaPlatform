@@ -11,27 +11,32 @@ $(function() {
         passval = $('#password1').serializeArray()[0].value;
         passval2 = $('#password2').serializeArray()[0].value;
 
-        if (passval == passval2) {
-            const response = await axios({
-                method: 'POST',
-                url: 'http://localhost:3000/account/create',
-                data: {
-                    "name": nameval,
-                    "pass": passval,
-                    "data": {
-                        "country": countryval,
-                        "city": cityval,
-                        "phoneNumber": phoneNumberval,
-                        "email": emailval,
+        if ($('#password1').val().length >= 8) {
+            alert($('#password1').val().length);
+            if (passval == passval2) {
+                const response = await axios({
+                    method: 'POST',
+                    url: 'http://localhost:3000/account/create',
+                    data: {
+                        "name": nameval,
+                        "pass": passval,
+                        "data": {
+                            "country": countryval,
+                            "city": cityval,
+                            "phoneNumber": phoneNumberval,
+                            "email": emailval,
+                        }
                     }
+                });
+                console.log(response);
+                if (response.status == 200) {
+                    window.location.replace("../test_page/index.html?username=" + nameval)
                 }
-            });
-            console.log(response);
+            } else {
+                document.getElementById("message").innerHTML = "Sorry! Two password input does not match!";
+            }
+        } else {
+            document.getElementById("message").innerHTML = "Password need to contain at least 8 characters!";
         }
-
-        document.getElementById("message").innerHTML = "Sorry! Two password input does not match!";
-
-
     })
-
 })
