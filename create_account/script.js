@@ -37,7 +37,20 @@ $(function() {
                     }
                 });
                 if (response.status == 200) {
-                    window.location.replace("../test_page/index.html?token=" + response2.data.jwt)
+                    let token = response2.data.jwt;
+                    axiosInstance = axios.create({
+                        headers: { Authorization: `Bearer ${token}` },
+                        baseURL: `http://localhost:3000`
+                    });
+                    const response3 = await axiosInstance.post('/user/profile', {
+                        data: {
+                            "country": countryval,
+                            "city": cityval,
+                            "phoneNumber": phoneNumberval,
+                            "email": emailval,
+                        }
+                    })
+                    window.location.replace("../test_page/index.html?token=" + token)
                 }
             } else {
                 document.getElementById("message").innerHTML = "Sorry! Two password input does not match!";
