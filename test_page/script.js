@@ -1,10 +1,10 @@
-$(function () {
+$(function() {
     loadDom();
 });
 
 function loadDom() {
     const $root = $("#root");
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         $root.append(`<div class="question" id=` + i + `></div>`);
     }
     let score = 0;
@@ -29,7 +29,7 @@ function loadDom() {
     q[17] = "You can stay calm under a lot of pressure.";
     q[18] = "When in a group of people you do not know, you have no problem jumping right into their conversation.";
     q[19] = "When you sleep, your dreams tend to be bizarre and fantastical.";
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
         let question = document.getElementById(i);
         $(question).append(`<div class="statement">` + q[i] + `</div><div class="decision"><div class="caption agree">Agree</div><div class="options">
         <div class="option agree" id="q:` + i + `:o:1"><span class="far fa-check"></span></div> <div class="option agree" id="q:` + i + `:o:2">
@@ -42,18 +42,17 @@ function loadDom() {
 }
 
 function record(e) {
-    let clas = e.currentTarget.className.split(" ")[1]; 
+    let clas = e.currentTarget.className.split(" ")[1];
     let id = e.currentTarget.id;
-    let question = id.split(":")[1], option = id.split(":")[3];
-    for(let i = 0; i < 7; i++) {
-        if(i < 3) {
-            document.getElementById("q:" + question + ":o:" + (i+1)).setAttribute("class", "option agree");
-        }
-        else if(i > 3) {
-            document.getElementById("q:" + question + ":o:" + (i+1)).setAttribute("class", "option disagree");
-        }
-        else {
-            document.getElementById("q:" + question + ":o:" + (i+1)).setAttribute("class", "option neutral");
+    let question = id.split(":")[1],
+        option = id.split(":")[3];
+    for (let i = 0; i < 7; i++) {
+        if (i < 3) {
+            document.getElementById("q:" + question + ":o:" + (i + 1)).setAttribute("class", "option agree");
+        } else if (i > 3) {
+            document.getElementById("q:" + question + ":o:" + (i + 1)).setAttribute("class", "option disagree");
+        } else {
+            document.getElementById("q:" + question + ":o:" + (i + 1)).setAttribute("class", "option neutral");
         }
     }
     e.currentTarget.setAttribute("class", "option " + clas + " active");
