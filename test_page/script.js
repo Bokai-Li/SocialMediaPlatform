@@ -45,6 +45,7 @@ function loadDom() {
     $(".option").on("click", record);
 }
 
+<<<<<<< HEAD
 async function submit(e){
     e.preventDefault();
     const response = await axios({
@@ -60,6 +61,28 @@ async function submit(e){
         url: 'http://localhost:3000/private',
     })
     console.log(response);
+=======
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+    });
+    return vars;
+}
+
+async function submit(e) {
+    e.preventDefault();
+    let token = getUrlVars()["token"];
+    console.log(token)
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response2 = await axiosInstance.post('/user/score', {
+        data: score
+    })
+    console.log(response2);
+>>>>>>> afb9c70c078bdc286eff74679afc39efedf58e0d
 }
 
 async function record(e) {

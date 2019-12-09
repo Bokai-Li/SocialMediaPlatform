@@ -1,74 +1,38 @@
-
-const handleNewButtonPress = function(event) {
-    $(`<textarea id="writenew" class="textarea" maxlength="280" placeholder="Create your new tweet here (max 280 characters)"></textarea>
-       <button id="newpost" class="button is-danger">
-            <i class="fas fa-blog"></i> Post
-        </button>
-       <button id="cancelpost" class="button is-warning cancel">Cancel</button>
-       `).appendTo(".new");
-    $('#newpost').on('click', handlePostPress);
-    $('#cancelpost').on('click', function(){
-        $('.new').empty();
-    })
-};
-
-const handlePostPress = function(event){
-    postTweets();
-}
-
-const renderTweet = function(tweet) {
+export const renderHeroCard = function(hero) {
+    // TODO: Copy your code from a04 to render the hero card
+    // TODO: Generate HTML elements to represent the hero
+    // TODO: Return these elements as a string, HTMLElement, or jQuery object
+    // Example: return `<div>${hero.name}</div>`;
     return `
-        
-    <div class="card" id ="${tweet.id}">
-        <div class="card-content">
-            <div class="content">
-                <img class="headimg" src="wyb.JPG" alt="myimage">
-                &nbsp;&nbsp;
-                <span class="author">
-                    ${tweet.author}
-                </span>  
-                <p>${tweet.body}</p>
-            </div>
-
-            <div class="content has-text-left">
-                @Shanghai-Xuhui
-                <br>
-                8:45 11.29.2019
-            </div>
-    
-            <div class="content with-border" >
-                    <div class="columns" id="button">
-                            <div class="column is-4">
-                                <button class="like three-button " id="like${tweet.id}">
-                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
-                                </button>
-                            </div>
-                            <div class="column is-4">
-                                <button class="three-button" id="reply${tweet.id}">
-                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
-                                </button>
-                            </div>
-                            <div class="column is-4">
-                                <button class="three-button" id="retweet${tweet.id}">
-                                    <i class="fas fa-retweet"></i> Retweet (${tweet.retweetCount})
-                                </button>
-                            </div>
-                    </div>
-            </div>
-            
-
-
-            <div class="content replyblockbefore" id="replycontent${tweet.id}">
-
-            </div>
+  <div class="column is-one-third heroCard" id="${hero.id}Card">
+    <div class="card">
+      <div class="card-image has-text-centered" style="background-color: ${hero.backgroundColor}">
+        <br>
+        <figure class="image is-128x128 center" >
+          <img src="${hero.img}" alt="Placeholder image" class="roundBorder">
+        </figure>
+        <br>
+        <h2 class="title is-2" style="color:${hero.color}">${hero.name}</h2>
+        <br>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <h5 class="subtitle is-4 has-text-grey has-text-weight-bold">${hero.subtitle}</h5>
+          <p class="thick" > <span style="font-weight:bold">Alter ego: </span>${hero.first} ${hero.last}</p >
+          <p class="thick" > <span style="font-weight:bold">First appearance:</span> ${hero.firstSeen}</p >
+          <p> <span style="font-weight:bold">Short Description: <br /></span>${hero.description} </p >
+          <br>
+          <button class="button is-dark is-pulled-right editButton" id="${hero.last}" type="button">Edit</button>
+          <br>
         </div>
+      </div>
     </div>
-    `;
+  </div>`
 };
 
-const renderMyTweet = function(tweet){
+
+const renderMyTweet = function(tweet) {
     return `
-     
     <div class="card" id ="${tweet.id}">
         <div class="card-content">
             <div class="content">
@@ -124,12 +88,12 @@ const renderMyTweet = function(tweet){
     </div>
 `;
 
-            
 
-   
+
+
 }
 
-async function readTweets(id){
+async function readTweets(id) {
     const result = await axios({
         method: 'get',
         url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}`,
@@ -138,44 +102,44 @@ async function readTweets(id){
     return result.data;
 }
 
-async function postTweets(){
+async function postTweets() {
     const result = await axios({
         method: 'POST',
         url: 'http://localhost:3000/private',
         data: {
-          "tweet": $("#writenew").val()
+            "tweet": $("#writenew").val()
         },
     });
     console.log(result);
 }
 
-async function retweet(id){
+async function retweet(id) {
     const result = await axios({
         method: 'post',
         url: 'https://comp426fa19.cs.unc.edu/a09/tweets',
         withCredentials: true,
         data: {
-          "type": "retweet",
-          "parent": id,
-          "body": $("#readyretweet").val()
+            "type": "retweet",
+            "parent": id,
+            "body": $("#readyretweet").val()
         },
     });
 }
 
-async function reply(id){
+async function reply(id) {
     const result = await axios({
         method: 'post',
         url: 'https://comp426fa19.cs.unc.edu/a09/tweets',
         withCredentials: true,
         data: {
-          "type": "reply",
-          "parent": id,
-          "body": $("#readyreply").val()
+            "type": "reply",
+            "parent": id,
+            "body": $("#readyreply").val()
         },
     });
 }
 
-async function like(id){
+async function like(id) {
     const result = await axios({
         method: 'put',
         url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}/like`,
@@ -183,7 +147,7 @@ async function like(id){
     });
 }
 
-async function unlike(id){
+async function unlike(id) {
     const result = await axios({
         method: 'put',
         url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}/unlike`,
@@ -191,7 +155,7 @@ async function unlike(id){
     });
 }
 
-async function deleteTweets(id){
+async function deleteTweets(id) {
     const result = await axios({
         method: 'delete',
         url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}`,
@@ -199,7 +163,7 @@ async function deleteTweets(id){
     });
 }
 
-async function getTweets(){
+async function getTweets() {
     const result = await axios({
         method: 'get',
         url: 'https://comp426fa19.cs.unc.edu/a09/tweets',
@@ -208,13 +172,13 @@ async function getTweets(){
     return result.data;
 }
 
-async function updateTweets(id){
+async function updateTweets(id) {
     const result = await axios({
         method: 'put',
         url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}`,
         withCredentials: true,
         data: {
-          body: $("#underedit").val()
+            body: $("#underedit").val()
         },
     });
 }
@@ -223,36 +187,36 @@ async function view() {
     let $root = $(".tweets");
     let tweets = await getTweets();
     tweets.forEach(tweet => {
-        if(tweet.isMine){
+        if (tweet.isMine) {
             $root.append(renderMyTweet(tweet));
-        }else{
+        } else {
             $root.append(renderTweet(tweet));
-        } 
-        
+        }
+
     });
 
-    
-    for(let i = 0; i < tweets.length; i++){
+
+    for (let i = 0; i < tweets.length; i++) {
         let id = tweets[i].id;
         let body = tweets[i].body;
         let detail = await readTweets(id);
 
-        if(tweets[i].isLiked){
+        if (tweets[i].isLiked) {
             $(`#like${id}`).toggleClass('active');
         }
-       
-        $(`#like${id}`).click(function(){                     
+
+        $(`#like${id}`).click(function() {
             //$(`#like${id}`).toggleClass('active');              // indicate if user likes one tweet
-            if(tweets[i].isLiked){
+            if (tweets[i].isLiked) {
                 $(`#like${id}`).toggleClass('active');
                 unlike(id);
-            }else{
+            } else {
                 $(`#like${id}`).toggleClass('active');
                 like(id);
             }
         })
 
-        $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
+        $(`#retweet${id}`).click(function() { // allow user to retweet their tweets
             let retweet_form = `
 
                 <div class="card" id="rtcard${id}">
@@ -262,16 +226,16 @@ async function view() {
                 </div>
             `;
             $(retweet_form).insertAfter(`#${id}`);
-            $('.retweet').on('click', function(){
+            $('.retweet').on('click', function() {
                 retweet(id);
             });
-            $('#cancelretweet').on('click', function(){
+            $('#cancelretweet').on('click', function() {
                 $(`#rtcard${id}`).remove();
             });
 
-        }); 
+        });
 
-        $(`#reply${id}`).click(function(){                    // allow user to reply to tweets
+        $(`#reply${id}`).click(function() { // allow user to reply to tweets
             let reply_form = `
                 <div class="card" id="rpcard${id}">
                     <textarea id="readyreply" class="textarea" maxlength="280" placeholder="${body}"></textarea>
@@ -280,19 +244,19 @@ async function view() {
                 </div>
             `;
             $(reply_form).insertAfter(`#${id}`);
-            $('.reply').on('click', function(){
+            $('.reply').on('click', function() {
                 reply(id);
             });
-            $('#cancelreply').on('click', function(){
+            $('#cancelreply').on('click', function() {
                 $(`#rpcard${id}`).remove();
             });
-        }); 
+        });
 
 
-        
-        if(tweets[i].replyCount > 0){
+
+        if (tweets[i].replyCount > 0) {
             let replies = detail.replies;
-            for(let j = 0; j < replies.length; j++){
+            for (let j = 0; j < replies.length; j++) {
                 let author = replies[j].author;
                 let histweet = replies[j].body;
                 $(`#replycontent${id}`).append(`<img class="replyimg" src="wyb.JPG" alt="myimage">
@@ -301,8 +265,8 @@ async function view() {
         }
 
         // allow user to edit their tweets   
-        if(tweets[i].isMine){
-            $(`#edit${id}`).on('click', function(){                   
+        if (tweets[i].isMine) {
+            $(`#edit${id}`).on('click', function() {
                 let form = `
                 <div class="card" id="card${id}">
                     <textarea id="underedit" class="textarea" maxlength="280" placeholder="${body}"></textarea>
@@ -311,25 +275,24 @@ async function view() {
                  </div>
                 `;
                 $(form).insertAfter(`#${id}`);
-                $('.update').on('click', function(){
+                $('.update').on('click', function() {
                     updateTweets(id);
                 });
-                $('#canceledit').on('click', function(){
+                $('#canceledit').on('click', function() {
                     $(`#card${id}`).remove();
                 });
-                
+
             });
 
-            $(`#delete${id}`).on('click', function(){
+            $(`#delete${id}`).on('click', function() {
                 deleteTweets(id);
             });
-        } 
+        }
 
     }
 
-   
+
 }
 
 view();
-$('#newtweet').on('click', handleNewButtonPress); 
-
+$('#newtweet').on('click', handleNewButtonPress);

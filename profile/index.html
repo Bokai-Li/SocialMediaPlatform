@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +20,84 @@
                   <a href="#">Link 1</a>
                   <a href="#">Link 2</a>
                   <a href="#">Link 3</a>
-                </div>
-              </div>
-            <h1>UNIQ</h1>
+=======
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>User Profile</title>
+
+    <!-- Include links to CSS stylesheets below -->
+    <script src="https://kit.fontawesome.com/1b4695ae93.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="logo">
+        <figure>
+            <img id="logoimg" src="logo_v1.png">
+        </figure>
+
+        <div class="dropdown">
+            <button class="dropbtn">
+                        <div class="menu"></div>
+                        <div class="menu"></div>
+                        <div class="menu"></div>
+                    </button>
+            <div class="dropdown-content">
+                <a href="../home/index.html"><img class="icon" src="icons/home.png" alt="home">Home</a>
+                <a href="index.html"><img class="icon" src="icons/profile.png" alt="profile">Profile</a>
+                <a href="../ball/index.html"><img class="icon" src="icons/explore.png" alt="explore">Explore</a>
+                <a href="#findfriend"><img class="icon" src="icons/friend.png" alt="friends">Friends</a>
+                <!--
+                <a href="#"><img class="icon" src="icons/notification.png" alt="notification">Notifications</a>
+                <a href="#"><img class="icon" src="icons/message.png" alt="messages">Messages</a>
+                <a href="#"><img class="icon" src="icons/more.png" alt="more">More</a>
+                -->
+
+            </div>
         </div>
+
+    </div>
+
+
+
+    <!--TODO section for people to write new tweets-->
+    <div class="new"></div>
+
+    <!--TODO section for people to view tweets-->
+    <div class="columns is-multiline" id="begin">
+
+        <div class="column is-7 tweets">
+            <div class="heroCard" id="Card">
+                <div class="card">
+                    <div class="card-image has-text-centered" style="background-color: red">
+                        <br>
+                        <figure class="image is-128x128 center">
+                            <img src="wyb.JPG" Placeholder image " class="roundBorder ">
+                        </figure>
+                        <br>
+                        <h2 class="title is-2 " style="color:white ">name</h2>
+                        <br>
+                    </div>
+                    <div class="card-content ">
+                        <div class="content ">
+                            <h5 class="subtitle has-text-grey has-text-weight-bold ">subtitle</h5>
+                            <p class="thick "> <span style="font-weight:bold ">Alter ego: </span>first</p>
+                            <p class="thick "> <span style="font-weight:bold ">First appearance:</span> ${hero.firstSeen}</p>
+                            <p> <span style="font-weight:bold ">Short Description: <br /></span>${hero.description} </p>
+                            <br>
+                            <button class="button is-dark is-pulled-right editButton " id="${hero.last} " type="button ">Edit</button>
+                            <br>
+                        </div>
+                    </div>
+>>>>>>> afb9c70c078bdc286eff74679afc39efedf58e0d
+                </div>
+            </div>
+        </div>
+<<<<<<< HEAD
             <form>
               <img src="./hyzhang.png" style="width:50px">
               <input class="postText" placeholder="It's a great day!"></input>
@@ -39,3 +114,117 @@
             
     </body>
 </html>
+=======
+
+        <div class="column is-5 panels " id="sticky ">
+            <div id="sticky ">
+                <div id="recommend ">
+                    <nav class="panel ">
+                        <p class="panel-heading ">
+                            Friends recommended for you
+                        </p>
+
+                        <a class="panel-block is-active ">
+                            <span class="panel-icon ">
+                                            <i class="fas fa-book " aria-hidden="true "></i>
+                                            </span> Yibo Wang
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                            <i class="fas fa-book " aria-hidden="true "></i>
+                                            </span> Zhan Xiao
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                            <i class="fas fa-book " aria-hidden="true "></i>
+                                            </span> Coco Zhang
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                            <i class="fas fa-book " aria-hidden="true "></i>
+                                            </span> Ziwei Chen
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                            <i class="fas fa-code-branch " aria-hidden="true "></i>
+                                            </span> Cicilia Zeng
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                <i class="fas fa-code-branch " aria-hidden="true "></i>
+                            </span> Bokai Li
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                <i class="fas fa-code-branch " aria-hidden="true "></i>
+                            </span> Hongyi Zhang
+                        </a>
+
+
+                    </nav>
+                </div>
+
+                <div id="findfriend ">
+                    <nav class="panel ">
+                        <p class="panel-heading ">
+                            Find your friends
+                        </p>
+                        <div class="panel-block ">
+                            <p class="control has-icons-left ">
+                                <input class="input " type="text " placeholder="Search ">
+                                <span class="icon is-left ">
+                                                    <i class="fas fa-search " aria-hidden="true "></i>
+                                                </span>
+                            </p>
+                        </div>
+                        <p class="panel-tabs ">
+                            <a class="is-active ">All</a>
+                            <a>Private</a>
+                            <a>Recommended</a>
+                        </p>
+                        <a class="panel-block is-active ">
+                            <span class="panel-icon ">
+                                                <i class="fas fa-book " aria-hidden="true "></i>
+                                                </span> bulma
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                                <i class="fas fa-book " aria-hidden="true "></i>
+                                                </span> marksheet
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                                <i class="fas fa-book " aria-hidden="true "></i>
+                                                </span> minireset.css
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                                <i class="fas fa-book " aria-hidden="true "></i>
+                                                </span> jgthms.github.io
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                                <i class="fas fa-code-branch " aria-hidden="true "></i>
+                                                </span> daniellowtw/infboard
+                        </a>
+                        <a class="panel-block ">
+                            <span class="panel-icon ">
+                                                <i class="fas fa-code-branch " aria-hidden="true "></i>
+                                                </span> mojs
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Include links to JavaScript files below -->
+    <script src="node_modules/axios/dist/axios.js "></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js "></script>
+    <script src="script.js "></script>
+    <script src="smooth_scroll.js "></script>
+
+</body>
+
+</html>
+>>>>>>> afb9c70c078bdc286eff74679afc39efedf58e0d
