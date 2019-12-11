@@ -138,12 +138,6 @@ async function readTweets(id){
 }
 
 async function postTweets(){
-    //let token = getUrlVars()["token"];
-    axiosInstance = axios.create({
-        //headers: {Authorization: `Bearer ${token}`},
-        baseURL: `http://localhost:3000/public`
-    });
-
     const response = await axiosInstance.post('', {
         data: {
             "author": user,
@@ -224,6 +218,15 @@ async function updateTweets(id){
 }
 
 async function view() {
+    let token = getUrlVars()["token"];
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+
+    const response1 = await axiosInstance.get('/account/status', {});
+    let username = response1.data.user.name;
+    
     let $root = $(".tweets");
     let tweets = await getTweets();
     tweets.forEach(tweet => {

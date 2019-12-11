@@ -16,6 +16,23 @@
     background-color:rgb(64, 79, 88);
 }
 
+button {
+    background-color: rgb(71, 104, 250); 
+    border: none;
+    color: rgb(255, 224, 224);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+button:hover {
+    background-color: rgb(115, 133, 211); 
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
 .question {
     padding: 35px 0 20px;
     width: 100%;
@@ -88,6 +105,23 @@
 
 .options .option.agree {
     border:2px solid #59a6ffbe
+}
+
+button {
+    background-color: rgb(71, 104, 250); 
+    border: none;
+    color: rgb(255, 224, 224);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+button:hover {
+    background-color: rgb(115, 133, 211); 
+    color: rgb(255, 255, 255);
+    cursor: pointer;
 }
 
 .options .option.agree.active, .test-questions.comp .question .decision .options .option.agree:hover {
