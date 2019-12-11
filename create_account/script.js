@@ -50,6 +50,14 @@ $(function() {
                             "email": emailval,
                         }
                     })
+                    const response4 = await axiosInstance.post('/private/' + nameval.toLowerCase() + '/profile', {
+                        data: {
+                            "country": countryval,
+                            "city": cityval,
+                            "phoneNumber": phoneNumberval,
+                            "email": emailval,
+                        }
+                    })
                     window.location.replace("../test_page/index.html?token=" + token)
                 }
             } else {

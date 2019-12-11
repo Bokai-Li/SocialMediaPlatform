@@ -1,9 +1,12 @@
 
 $(function () {
+    for(let j = 0; j < 20; j++) {
+        score[j] = 0;
+    }
     loadDom();
 });
 
-let score = 0;
+let score = new Array(20);
 
 function loadDom() {
     const $root = $("#root");
@@ -56,8 +59,6 @@ function getUrlVars() {
 async function submit(e) {
     e.preventDefault();
     let token = getUrlVars()["token"];
-    let closest = await findClosest(token);
-    console.log(closest);
     console.log(token);
     axiosInstance = axios.create({
         headers: { Authorization: `Bearer ${token}` },
@@ -65,11 +66,14 @@ async function submit(e) {
     });
     const response1 = await axiosInstance.get('/account/status', {});
     let username = response1.data.user.name;
-    const response2 = await axiosInstance.post('/private/' + username, {
+    const response = await axiosInstance.post('/private/' + username + '/', {
         data: {
             score: score,
-            closest10: closest
         }
+    });
+    let closest = await findClosest(token);
+    const response2 = await axiosInstance.post('/private/' + username + '/closest10', {
+        data: closest
     });
     console.log(response1);
     window.location.replace("../ball/index.html?token=" + token);
@@ -81,16 +85,21 @@ async function findClosest(token) {
         baseURL: `http://localhost:3000`
     });
     const response1 = await axiosInstance.get('/private');
-    let closest = new Array(10);
     let private_data = response1.data.result;
     let scores = new Array(private_data.length);
     for(let i = 0; i < private_data.length; i++) {
+        let deviation = 0;
         const response2 = await axiosInstance.get('/private/' + private_data[i]);
-        scores[i] = response2.data.result.score;
-        private_data[i] = {username: private_data[i], score: scores[i]};
+        console.log(response2)
+        for(let j = 0; j < 20; j++) {
+            scores[j] = response2.data.result.score[j];
+            deviation = Math.abs(scores[j] - score[j]);
+        }
+        private_data[i] = {username: private_data[i], deviation: deviation};
     }
-    private_data.sort((a, b) => Math.abs(b.score-score)<Math.abs(a.score-score));
-    let bound = (private_data.length < 11) ? private_data: 11;
+    private_data.sort((a, b) => b.deviation<a.deviation);
+    let bound = (private_data.length < 11) ? private_data.length: 11;
+    let closest = new Array(bound);
     for(let i = 0; i < bound; i++) {
         closest[i] = private_data[i].username;
     }
@@ -105,22 +114,22 @@ async function record(e) {
         if (document.getElementById("q:" + question + ":o:" + (i + 1)).getAttribute("class").indexOf("active") != -1) {
             if (i < 3) {
                 document.getElementById("q:" + question + ":o:" + (i + 1)).setAttribute("class", "option agree");
-                score -= i;
-                score--;
+                score[question] -= i;
+                score[question]--;
             }
             else if (i > 3) {
                 document.getElementById("q:" + question + ":o:" + (i + 1)).setAttribute("class", "option disagree");
-                score -= i;
-                score--;
+                score[question] -= i;
+                score[question]--;
             }
             else {
                 document.getElementById("q:" + question + ":o:" + (i + 1)).setAttribute("class", "option neutral");
-                score -= i;
-                score--;
+                score[question] -= i;
+                score[question]--;
             }
         }
     }
-    score += parseInt(option);
+    score[question] += parseInt(option);
+    console.log(question);
     e.currentTarget.setAttribute("class", "option " + clas + " active");
-    console.log(score);
 }
