@@ -56,15 +56,43 @@ function getUrlVars() {
 async function submit(e) {
     e.preventDefault();
     let token = getUrlVars()["token"];
-    console.log(token)
+    let closest = await findClosest(token);
+    console.log(closest);
+    console.log(token);
     axiosInstance = axios.create({
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
     });
-    const response2 = await axiosInstance.post('/user/score', {
-        data: score
-    })
-    console.log(response2);
+    const response1 = await axiosInstance.get('/account/status', {});
+    let username = response1.data.user.name;
+    const response2 = await axiosInstance.post('/private/' + username, {
+        data: {
+            score: score,
+            closest10: closest
+        }
+    });
+    console.log(response1);
+}
+
+async function findClosest(token) {
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response1 = await axiosInstance.get('/private');
+    let closest = new Array(10);
+    let private_data = response1.data.result;
+    let scores = new Array(private_data.length);
+    for(let i = 0; i < private_data.length; i++) {
+        const response2 = await axiosInstance.get('/private/' + private_data[i]);
+        scores[i] = response2.data.result.score;
+        private_data[i] = {username: private_data[i], score: scores[i]};
+    }
+    private_data.sort((a, b) => Math.abs(b.score-score)<Math.abs(a.score-score));
+    for(let i = 0; i < 11; i++) {
+        closest[i] = private_data[i].username;
+    }
+    return closest;
 }
 
 async function record(e) {
