@@ -29,3 +29,27 @@ body{
     cursor: grab;
     /* background-color:#FFFFFF; */
   }
+
+  #home_icon:hover {
+    color: #b19cd9;
+    cursor: grab;
+    /* background-color:#FFFFFF; */
+  }
+
+  #home_area:hover {
+    color: #b19cd9;
+    cursor: grab;
+    /* background-color:#FFFFFF; */
+  }
+
+  #twitter_area:hover {
+    color: #b19cd9;
+    cursor: grab;
+    /* background-color:#FFFFFF; */
+  }
+
+  #twitter_area {
+    color: #FFFFFF;
+    cursor: grab;
+    /* background-color:#FFFFFF; */
+  }
