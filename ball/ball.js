@@ -296,6 +296,7 @@ async function loadProfile(event){
   let city = user_profile.city;
   let phoneNumber = user_profile.phoneNumber;
   let email = user_profile.email;
+  let url = "../home/index.html?token=" + token + "&username=" + username
     $(event.target).append(
     `<div class="box">
   <article class="media">
@@ -316,6 +317,8 @@ async function loadProfile(event){
           <small>email: ${email}</small>
           <br>
           <small>phoneNumber: ${phoneNumber}</small>
+          <br>
+          <small><a href=${url}>Visit his/her twitter</a></small>
         </p>
       </div>
     </div>
