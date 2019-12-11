@@ -1,5 +1,4 @@
 async function handleInput(e){
-    console.log("hello")
     $("#autocomplete").empty()
     const location = await axios({
         method: 'GET',
@@ -7,13 +6,69 @@ async function handleInput(e){
     });
     var arr = location.data.message
     let val = e.target.value
-    for (i = 0; i < arr.length; i++) {
-        if (arr[i].city.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-            var firstpart = arr[i].city.substr(0, val.length)
-            var lastpart = arr[i].city.substr(val.length)
-          $("#autocomplete").append(`<div><strong>${firstpart}</strong>${lastpart}</div>`)
+    if(val!=""){
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i].city.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                var firstpart = arr[i].city.substr(0, val.length)
+                var lastpart = arr[i].city.substr(val.length)
+                $("#autocomplete").append(`<div id="item${i}"><strong>${firstpart}</strong>${lastpart}</div>`)
+                $(`#item${i}`).click(populateCityCountry)
+            }
         }
+    }
+    $("#city").off('keydown');
+    $("#city").keydown(handleKeydownAutocomplete);
+}
+
+function handleKeydownAutocomplete(e){
+    var activeItem = $(".autocomplete-active").attr("id")
+    var firstItem = $( "#autocomplete" ).children().first().attr("id")
+    var lastItem = $( "#autocomplete" ).children().last().attr("id")
+    if(activeItem==undefined){
+        activeItem = 0
+    }
+    if (e.keyCode == 40) {//down
+        if(activeItem!=lastItem){
+            if(activeItem==0){
+                $(`#${firstItem}`).addClass("autocomplete-active")
+            }else{
+                $(`#${activeItem}`).removeClass("autocomplete-active")
+                $(`#${activeItem}`).next().addClass("autocomplete-active")
+            }
+        }
+      } else if (e.keyCode == 38) {//up
+        if(activeItem!=firstItem){
+            $(`#${activeItem}`).removeClass("autocomplete-active")
+            $(`#${activeItem}`).prev().addClass("autocomplete-active")
+        }
+      } else if (e.keyCode == 13) {
+        e.preventDefault();
+        $(`#${activeItem}`).click();
+        
       }
+}
+
+async function populateCityCountry(e){
+    var city = e.currentTarget.innerHTML
+    city = city.replace("<strong>","")
+    city = city.replace("</strong>","")
+    $("#city").val(city)
+    const location = await axios({
+        method: 'GET',
+        url: 'http://localhost:3000/example/location',
+    });
+    var arr = location.data.message
+    let val = e.target.value
+    var country
+    if(val!=""){
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i].city.toUpperCase() == city.toUpperCase()) {
+                country=arr[i].country
+            }
+        }
+    }
+    $("#country").val(country)
+    $("#autocomplete").empty()
 }
 
 $(async function() {
