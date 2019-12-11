@@ -1,33 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>HomePage</title>
 
-        <!-- Include links to CSS stylesheets below -->
-        <!-- Add link to bulma here -->
-        <script src="http://www.cs.unc.edu/~kmp/comp426fall19/jquery-3.4.1.js"></script>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="solid.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
 
-        <div id="login-card">
-            <div class="form" id="login-form">
-                <h2>Login to your account</h2>
-                <div class="input">
-                    <input id="username" type="text" name ="username" placeholder="Phone, Email, or Username">
-                </div>
-                <div class="input">
-                    <input id="password" type="password" name ="password" placeholder="Password">
-                </div>
-                <div class="button">
-                    <button id="submitbtn" type="submit" style="color:white">Log In</button>
-                </div>                             
-              </div>
+    <!-- Include links to CSS stylesheets below -->
+    <!-- Add link to bulma here -->
+    <script src="http://www.cs.unc.edu/~kmp/comp426fall19/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="solid.css">
+</head>
+
+<body>
+
+    <div id="login-card">
+        <div class="form" id="login-form">
+            <h2>Login to your account</h2>
+            <div class="input">
+                <input id="username" type="text" name="username" placeholder="Phone, Email, or Username">
+            </div>
+            <div class="input">
+                <input id="password" type="password" name="password" placeholder="Password">
+            </div>
+            <input id="checkbox" type="checkbox" onclick="showPassword()"><span style="font-size: 13px;">Show Password</span>
+            <br>
+            <br>
+            <div class="button">
+                <button id="submitbtn" type="submit" style="color:white">Log In</button>
+            </div>
         </div>
-    </body>
-    <script src="node_modules/axios/dist/axios.js"></script>
-    <script src="engine.js"></script>
+    </div>
+</body>
+<script src="node_modules/axios/dist/axios.js"></script>
+<script src="engine.js"></script>
+<script>
+    function showPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+
 </html>

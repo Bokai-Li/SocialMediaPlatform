@@ -14,6 +14,9 @@ $(function() {
                 "pass": passval,
             }
         });
+        if (response.status == 200) {
+            window.location.replace("../test_page/index.html?token=" + response.data.jwt)
+        }
         console.log(response)
     })
   });
