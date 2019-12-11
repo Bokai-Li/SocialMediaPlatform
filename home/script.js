@@ -5,15 +5,18 @@ function getUrlVars() {
     });
     return vars;
 }
-
 let currentuser = getUrlVars()["username"];
 let token = getUrlVars()["token"];
+let username;
+
+async function getUsername(){
     axiosInstance = axios.create({
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
-});
-const response1 = await axiosInstance.get('/account/status', {});
-let username = response1.data.user.name;
+    });
+    const response1 = await axiosInstance.get('/account/status', {});
+    return response1.data.user.name;
+}
 
 const handleNewButtonPress = function(event) {
     $(`<textarea id="writenew" class="textarea" maxlength="280" placeholder="Create your new tweet here (max 280 characters)"></textarea>
@@ -32,36 +35,36 @@ const handlePostPress = function(event){
     postTweets();
 }
 
-const renderTweet = function(tweet) {
+const renderTweet = function(tweet, id) {
     return `
         
-    <div class="card" id ="${tweet.id}">
+    <div class="card" id ="${id}">
         <div class="card-content">
             <div class="content">
                 <img class="headimg" src="wyb.JPG" alt="myimage">
                 &nbsp;&nbsp;
                 <span class="author">
-                    ${tweet.id.author}
+                    ${tweet.author}
                 </span>  
-                <p>${tweet.id.body}</p>
+                <p>${tweet.body}</p>
             </div>
 
             <div class="content has-text-left">
                 @Shanghai-Xuhui
                 <br>
-                ${tweet.id.createdAt}
+                ${tweet.createdAt}
             </div>
     
             <div class="content with-border" >
                     <div class="columns" id="button">
                             <div class="column is-6">
-                                <button class="like three-button " id="like${tweet.id}">
-                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.id.likeCount})
+                                <button class="like three-button " id="like${id}">
+                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
                                 </button>
                             </div>
                             <div class="column is-6">
-                                <button class="three-button" id="reply${tweet.id}">
-                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.id.replyCount})
+                                <button class="three-button" id="reply${id}">
+                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
                                 </button>
                             </div>
                     </div>
@@ -69,7 +72,7 @@ const renderTweet = function(tweet) {
             
 
 
-            <div class="content replyblockbefore" id="replycontent${tweet.id}">
+            <div class="content replyblockbefore" id="replycontent${id}">
 
             </div>
         </div>
@@ -77,45 +80,45 @@ const renderTweet = function(tweet) {
     `;
 };
 
-const renderMyTweet = function(tweet){
+const renderMyTweet = function(tweet, id){
     return `
      
-    <div class="card" id ="${tweet.id}">
+    <div class="card" id ="${id}">
         <div class="card-content">
             <div class="content">
                 <img class="headimg" src="wyb.JPG" alt="myimage">
                 &nbsp;&nbsp;
                 <span class="author">
-                    ${tweet.id.author}
+                    ${tweet.author}
                 </span>  
-                <p>${tweet.id.body}</p>
+                <p>${tweet.body}</p>
             </div>
 
             <div class="content has-text-left">
                 @Shanghai-Xuhui
                 <br>
-                ${tweet.id.createdAt}
+                ${tweet.createdAt}
             </div>
 
             <div class="content with-border" >
                     <div class="columns" id="button">
                             <div class="column is-3">
-                                <button class="like three-button " id="like${tweet.id}">
-                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.id.likeCount})
+                                <button class="like three-button " id="like${id}">
+                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
                                 </button>
                             </div>
                             <div class="column is-3">
-                                <button class="three-button" id="reply${tweet.id}">
-                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.id.replyCount})
+                                <button class="three-button" id="reply${id}">
+                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
                                 </button>
                             </div>
                             <div class="column is-3">
-                                <button class="three-button" id="edit${tweet.id}">
+                                <button class="three-button" id="edit${id}">
                                     <i class="fas fa-user-edit"></i> Edit
                                 </button>
                             </div>
                             <div class="column is-3">
-                                <button class="three-button" id="delete${tweet.id}">
+                                <button class="three-button" id="delete${id}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -123,7 +126,7 @@ const renderMyTweet = function(tweet){
                     </div>
             </div>
 
-            <div class="content replyblockbefore" id="replycontent${tweet.id}">
+            <div class="content replyblockbefore" id="replycontent${id}">
 
             </div>
         </div>
@@ -132,15 +135,26 @@ const renderMyTweet = function(tweet){
 }
 
 async function readTweets(id){
-    const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     return response.data.result;
 }
 
 async function postTweets(){ 
-    let id = getTweets().length;
-    const response = await axiosInstance.post('/private/' + username + '/tweet', {
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    let curr_tweet = await getMyTweets();
+    console.log(curr_tweet);
+    let id = Object.keys(curr_tweet).length;
+    console.log(id);
+    const response = await axiosInstance.post('/private/' + username + '/tweet/' + id, {
         data: {
-            [id]: {
+           
                 "type": "tweet",
                 "author": username,
                 "body": $("#writenew").val(),
@@ -151,13 +165,17 @@ async function postTweets(){
                 "replies": [],
                 "createdAt": Date.now(),
                 "updatedAt": Date.now(),
-            },
+            
         }   
     });
     console.log(response);
 }
 
 async function reply(id){
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
     const response = await axiosInstance.post('/private/' + currentuser + `/tweet/${id}/replies`,{
         data: [{
             "author": username,
@@ -169,17 +187,28 @@ async function reply(id){
 }
 
 async function like(id){
-    const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
     if(!temp.isLiked){
         deleteTweets(id);
         temp.isLiked = true;
         temp.likeCount += 1;
-        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/', {
+        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
             data: {
-                [id]: {
-                    temp
-                }  
+                "type": temp.type,
+                "author": temp.author,
+                "body": temp.body,
+                "isMine": true,
+                "isLiked": temp.isLiked,
+                "replyCount":temp.replyCount,
+                "likeCount": temp.likeCount,
+                "replies": temp.replies,
+                "createdAt": temp.createdAt,
+                "updatedAt": temp.updatedAt,
             }   
         });
     }
@@ -187,33 +216,67 @@ async function like(id){
 }
 
 async function unlike(id){
-    const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
     if(temp.isLiked){
         deleteTweets(id);
         temp.isLiked = false;
         temp.likeCount -= 1;
-        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet', {
+        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
             data: {
-                [id]: {
-                    temp
-                }  
+                "type": temp.type,
+                "author": temp.author,
+                "body": temp.body,
+                "isMine": true,
+                "isLiked": temp.isLiked,
+                "replyCount":temp.replyCount,
+                "likeCount": temp.likeCount,
+                "replies": temp.replies,
+                "createdAt": temp.createdAt,
+                "updatedAt": temp.updatedAt,
             }   
         });
     } 
 }
 
 async function deleteTweets(id){
-    const response = await axiosInstance.delete('/private' + currentuser + `/tweet/${id}`, {});
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.delete('/private/' + currentuser + `/tweet/${id}`, {});
 }
 
 async function getTweets(){
-    const response = await axiosInstance.get('/private' + currentuser + '/tweet', {});
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.get('/private/' + currentuser + '/tweet');
+    console.log(response.data.result);
+    return response.data.result;
+}
+
+async function getMyTweets(){
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.get('/private/' + username + '/tweet');
+    console.log(response.data.result);
     return response.data.result;
 }
 
 async function updateTweets(id){
-    const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
+    axiosInstance = axios.create({
+        headers: { Authorization: `Bearer ${token}` },
+        baseURL: `http://localhost:3000`
+    });
+    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
     temp.body = $("#underedit").val();
     const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/', {
@@ -226,20 +289,22 @@ async function updateTweets(id){
 }
 
 async function view() {
+    username = await getUsername();
+    $('#gohome').attr("href", `/home/index.html?token=${token}&username=${username}`);
     let $root = $(".tweets");
+    
     let tweets = await getTweets();
-
     if(currentuser == username){
-        tweets.forEach(tweet => {
-            $root.append(renderMyTweet(tweet));  
-        });
+        for(let i = Object.keys(tweets).length - 1; i >= 0; i--){ 
+            $root.append(renderMyTweet(tweets[i], i));  
+        }
     }else{
-        tweets.forEach(tweet => {
-            $root.append(renderTweet(tweet));
-        });
+        for(let i = Object.keys(tweets).length - 1; i >= 0; i--){ 
+            $root.append(renderTweet(tweets[i], i)); 
+        }    
     }
-
-    for(let i = 0; i < tweets.length; i++){
+    
+    for(let i = 0; i < Object.keys(tweets).length; i++){
         let id = i;
         let body = tweets[i].body;
         let detail = await readTweets(id);
@@ -308,7 +373,7 @@ async function view() {
         }
 
         // allow user to edit their tweets   
-        if(tweets[i].isMine){
+        
             $(`#edit${id}`).on('click', function(){                   
                 let form = `
                 <div class="card" id="card${id}">
@@ -330,7 +395,7 @@ async function view() {
             $(`#delete${id}`).on('click', function(){
                 deleteTweets(id);
             });
-        } 
+        
 
     }
 
@@ -340,9 +405,10 @@ async function view() {
 view();
 $('#newtweet').on('click', handleNewButtonPress); 
 
+
 /******* ****************************************** right panel *********************************************************/
 async function findTenFriends(){
-    const response = await axiosInstance.get('/private' + username + `closest10`, {});
+    const response = await axiosInstance.get('/private/' + username + `closest10`, {});
     return response.data.result;
 }
 
@@ -354,5 +420,6 @@ async function panel(){
                         <i class="fas fa-people-carry"></i>
                         </span> ${friends[i]}
                     </a>`;
+        $(bar).appendTo(".panel");
     }
 }

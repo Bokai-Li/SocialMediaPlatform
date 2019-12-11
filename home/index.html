@@ -26,7 +26,7 @@
                         <div class="menu"></div>
                     </button>
             <div class="dropdown-content">
-                <a href="index.html"><img class="icon" src="icons/home.png" alt="home">Home</a>
+                <a id="gohome" href=""><img class="icon" src="icons/home.png" alt="home">Home</a>
                 <a href="../profile/index.html"><img class="icon" src="icons/profile.png" alt="profile">Profile</a>
                 <a href="../ball/index.html"><img class="icon" src="icons/explore.png" alt="explore">Explore</a>
                 <a href="#findfriend"><img class="icon" src="icons/friend.png" alt="friends">Friends</a>
@@ -67,54 +67,7 @@
             
 
             <div class="column is-7 tweets">
-                    <div class="card" id ="${tweet.id}">
-                            <div class="card-content">
-                                <div class="content">
-                                    <img class="headimg" src="wyb.JPG" alt="myimage">
-                                    &nbsp;&nbsp;
-                                    <span class="author">
-                                        ${tweet.id.author}
-                                    </span>  
-                                    <p>${tweet.id.body}</p>
-                                </div>
                     
-                                <div class="content has-text-left">
-                                    @Shanghai-Xuhui
-                                    <br>
-                                    ${tweet.id.createdAt}
-                                </div>
-                    
-                                <div class="content with-border" >
-                                        <div class="columns" id="button">
-                                                <div class="column is-3">
-                                                    <button class="like three-button " id="like${tweet.id}">
-                                                        <i class="fas fa-thumbs-up"></i> Like (${tweet.id.likeCount})
-                                                    </button>
-                                                </div>
-                                                <div class="column is-3">
-                                                    <button class="three-button" id="reply${tweet.id}">
-                                                        <i class="fas fa-comment-dots"></i> Reply (${tweet.id.replyCount})
-                                                    </button>
-                                                </div>
-                                                <div class="column is-3">
-                                                    <button class="three-button" id="edit${tweet.id}">
-                                                        <i class="fas fa-user-edit"></i> Edit
-                                                    </button>
-                                                </div>
-                                                <div class="column is-3">
-                                                    <button class="three-button" id="delete${tweet.id}">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </div>
-                    
-                                        </div>
-                                </div>
-                    
-                                <div class="content replyblockbefore" id="replycontent${tweet.id}">
-                    
-                                </div>
-                            </div>
-                        </div>
             </div>
 
             <div class="column is-5 panels" id="sticky">

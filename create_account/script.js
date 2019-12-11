@@ -104,7 +104,7 @@ $(async function() {
         countryvalencoded = countryval.replace(' ', '+')
         if ($('#password1').val().length >= 8) {
             if (passval == passval2) {
-                var googleUrl='https://maps.googleapis.com/maps/api/geocode/json?address='+cityvalencoded+',+'+countryvalencoded+'&key=AIzaSyCpWVcPj5Oar0WSPGmBVOBraCZEbOcRz1I'
+                var googleUrl='https://maps.googleapis.com/maps/api/geocode/json?address='+cityvalencoded+',+'+countryvalencoded+'&key='+config.gmapKey
                 const geo = await axios({
                     method: 'GET',
                     url: googleUrl
@@ -146,7 +146,7 @@ $(async function() {
                     await axiosInstance.post('/private/' + nameval.toLowerCase() + '/location',{
                         data:{
                             "lat":geo.data.results[0].geometry.location.lat,
-                            "city":geo.data.results[0].geometry.location.lng,
+                            "lng":geo.data.results[0].geometry.location.lng,
                         }
                     });
                     await axiosInstance.post('/user/profile', {
