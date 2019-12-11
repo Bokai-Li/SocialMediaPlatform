@@ -209,13 +209,22 @@ function createFlag(color,userName){
 }
 
 
-function addUser(user,lat,lng){
+function addUser(user,lat,lng,color,home){
+    if (color == undefined){
+      color = 0x000000
+    }
     let userName = user;
-    $("#location").append(`<p class=users style="margin-bottom:10px;" id=${userName}>${userName}</p>`);
     let lon = lng;
-    let flag = addFlag(lat,lon,0x000000,userName);
+    let flag = addFlag(lat,lon,color,userName);
+    if (home){
+      $("#home_icon").on('click',rotateToFlag);
+      $("#my_home").on('click',rotateToFlag);
+    }
+    else{
+    $("#location").append(`&nbsp; <i class="fas fa-lg fa-address-card"></i> &nbsp; <span class=users style="margin-bottom:10px;" id=${userName}>${userName}</span><br>`);
     $(`#${userName}`).on('click',rotateToFlag);
     $(`#${userName}`).on('click', loadProfile)
+    }
     
     // adapt from https://stackoverflow.com/questions/33422917/three-js-rotate-sphere-to-arbitrary-position
     async function rotateToFlag(){
@@ -260,7 +269,6 @@ function addUser(user,lat,lng){
             }
         }
         flag.material.color.setHex(0xff0000); 
-        $(`#${userName}`).on('click', BackColor); 
 
         function BackColor(){
           flag.material.color.setHex(0x000000)
@@ -268,9 +276,17 @@ function addUser(user,lat,lng){
           $(`#${userName}`).unbind('click',BackColor);
         }
 
+        if (home){
+          await sleep(2000);
+          flag.material.color.setHex(0x000000);
+        }
+        else{
+        $(`#${userName}`).on('click', BackColor); 
         $(`#${userName}`).unbind('click',rotateToFlag);
+        }
 
         }
+      
         
 }
 
@@ -315,8 +331,6 @@ async function loadProfile(event){
           <small>City: ${city}</small>
           <br>
           <small>email: ${email}</small>
-          <br>
-          <small>phoneNumber: ${phoneNumber}</small>
           <br>
           <small><a href=${url}>Visit his/her twitter</a></small>
         </p>
@@ -391,7 +405,8 @@ const response2 = await axiosInstance.get('/private/' + username);
 let friends = response2.data.result.closest10;
 let lat = response2.data.result.location.lat;
 let lng = response2.data.result.location.lng;
-let flag = addFlag(lat,lng,0x6a0dad,username);
+addUser(username,lat,lng,0x6a0dad,true);
+
 
 for (let i = 0; i < friends.length;i++){
   let fri = friends[i];
@@ -403,10 +418,9 @@ for (let i = 0; i < friends.length;i++){
   addUser(fri,lat,lng)
   }
   }
-
-}
-
-
-}
+}}
 loadUsers();
 
+let token = getUrlVars()["token"];
+let url = "../home/index.html?token=" + token 
+$("#twitter_area").wrap(`<a href=${url}/>`);

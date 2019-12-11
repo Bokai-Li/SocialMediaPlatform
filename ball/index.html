@@ -11,6 +11,7 @@
     </head>z
 
 <body>
+       <script defer src="all.js"></script> 
         <script src="three.js"></script>
         <script src="font.js" type="module"></script>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -21,8 +22,15 @@
         <div class="columns">
         <div style="margin-left:20px;display:block;" class="column is-one-quarter" id="location">
         <!-- <button class="button is-dark" id="getLocation">Try It</button>  -->
-        
-        <p style="color:white;margin-bottom:10px;font-size: 1em;">Users that match you the most</p> 
+        <div id="home_area" style="margin-bottom:10px">
+        <i id="home_icon" class="fas fa-lg fa-globe-americas"></i>  
+        <span id="my_home">View Your Location</span>
+        </div>
+        <div id="twitter_area">
+        <i id="twitter_icon" class="fas fa-lg fa-home"></i>  
+        <span id="link_twitter">View Your Home Page</span>
+      </div>
+        <p style="color:white;margin-top:20px;margin-bottom:10px;font-size: 1.2em;">Users that match you the most</p> 
         <p style="color:white" id="demo"></p>
         </div>
         <div class="column" id="canvas">
