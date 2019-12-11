@@ -31,7 +31,7 @@ $(function () {
                 }
             });
             console.log(response2)
-            // window.location.replace("../test_page/index.html?token=" + response.data.jwt)
+            window.location.replace("/ball/index.html?token=" + token);
         }
     })
 });
