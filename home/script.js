@@ -341,11 +341,18 @@ view();
 $('#newtweet').on('click', handleNewButtonPress); 
 
 /******* ****************************************** right panel *********************************************************/
-async function findTenFriends(id){
+async function findTenFriends(){
     const response = await axiosInstance.get('/private' + username + `closest10`, {});
     return response.data.result;
 }
 
 async function panel(){
-    
+    let friends = findTenFriends();
+    for(let i = 0; i < friends.length; i++){
+        let bar = `<a class="panel-block is-active">
+                        <span class="panel-icon">
+                        <i class="fas fa-people-carry"></i>
+                        </span> ${friends[i]}
+                    </a>`;
+    }
 }
