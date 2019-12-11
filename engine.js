@@ -53,7 +53,8 @@ async function findClosest(token, nameval) {
         private_data[i] = {username: private_data[i], score: scores[i]};
     }
     private_data.sort((a, b) => Math.abs(b.score-score)<Math.abs(a.score-score));
-    for(let i = 0; i < 11; i++) {
+    let bound = (private_data.length < 11) ? private_data: 11;
+    for(let i = 0; i < bound; i++) {
         closest[i] = private_data[i].username;
     }
     return closest;
