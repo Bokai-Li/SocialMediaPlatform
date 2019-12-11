@@ -340,4 +340,12 @@ async function view() {
 view();
 $('#newtweet').on('click', handleNewButtonPress); 
 
+/******* ****************************************** right panel *********************************************************/
+async function findTenFriends(id){
+    const response = await axiosInstance.get('/private' + username + `closest10`, {});
+    return response.data.result;
+}
 
+async function panel(){
+    
+}
