@@ -146,7 +146,7 @@ $(async function() {
                     await axiosInstance.post('/private/' + nameval.toLowerCase() + '/location',{
                         data:{
                             "lat":geo.data.results[0].geometry.location.lat,
-                            "city":geo.data.results[0].geometry.location.lng,
+                            "lng":geo.data.results[0].geometry.location.lng,
                         }
                     });
                     await axiosInstance.post('/user/profile', {

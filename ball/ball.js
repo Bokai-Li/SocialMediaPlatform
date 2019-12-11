@@ -209,124 +209,93 @@ function createFlag(color,userName){
 }
 
 
-function addUsers(users){
-    for (let i = 0; i < users.length; i++){
-        let user = users[i];
-        let userName = user[0];
-        $("#location").append(`<p class=users style="margin-bottom:10px;" id=${userName}>${userName}</p>`);
+function addUser(user,lat,lng){
+    let userName = user;
+    $("#location").append(`<p class=users style="margin-bottom:10px;" id=${userName}>${userName}</p>`);
+    let lon = lng;
+    let flag = addFlag(lat,lon,0x000000,userName);
+    $(`#${userName}`).on('click',rotateToFlag);
+    $(`#${userName}`).on('click', loadProfile)
+    
+    // adapt from https://stackoverflow.com/questions/33422917/three-js-rotate-sphere-to-arbitrary-position
+    async function rotateToFlag(){
+        // as sprite is a child of mesh get world position
+        var spritePos = new THREE.Vector3().setFromMatrixPosition(flag.matrixWorld);
         
-
-        let lat = user[1];
-        let lon = user[2];
-        let flag = addFlag(lat,lon,0x000000,userName);
-        $(`#${userName}`).on('click',rotateToFlag);
+        //get the vectors for calculating angle
+        var cv3 = new THREE.Vector3().subVectors(camera.position, earth.position);
+        var sv3 = new THREE.Vector3().subVectors(spritePos, earth.position);
         
-        // adapt from https://stackoverflow.com/questions/33422917/three-js-rotate-sphere-to-arbitrary-position
-        async function rotateToFlag(){
-            // as sprite is a child of mesh get world position
-            var spritePos = new THREE.Vector3().setFromMatrixPosition(flag.matrixWorld);
-            
-            //get the vectors for calculating angle
-            var cv3 = new THREE.Vector3().subVectors(camera.position, earth.position);
-            var sv3 = new THREE.Vector3().subVectors(spritePos, earth.position);
-            
-            // we only want to rotate around y-axis, so only the angle in x-z-plane is relevant
-            var cv2 = new THREE.Vector2(cv3.x, cv3.z);
-            var sv2 = new THREE.Vector2(sv3.x, sv3.z);
-            
-            // normalize Vectors
-            cv2.normalize();
-            sv2.normalize();
-            // dot product
-            var dot = cv2.dot(sv2);
-
-            // var mycvx = new THREE.Vector2(cv3.y, cv3.z);
-            // var mysvx = new THREE.Vector2(sv3.y, sv3.z);
-            // mycvx.normalize();
-            // mysvx.normalize();
-            // var dot2 = -mycvx.dot(mysvx);
+        // we only want to rotate around y-axis, so only the angle in x-z-plane is relevant
+        var cv2 = new THREE.Vector2(cv3.x, cv3.z);
+        var sv2 = new THREE.Vector2(sv3.x, sv3.z);
         
-            // angle to between sprite and camera in radians
-            // cosinus is from 1 to -1, so we need to normalize and invert it and multiply it with PI to get proper angle
-            var angle = (1 - (dot + 1) / 2) * Math.PI  ;
-            //var angle2 = (1 - (dot2 + 1) / 2) * Math.PI  ;
-            
-            function sleep(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-              }
-
-            if(spritePos.x < 0){
-                angle -= 0.05
-                let total = 0;
-                while (total < angle){
-                    earth.rotation.y += 0.05; 
-                    total += 0.05;
-                    await sleep(15);
-                }
-            }
-            else{
-                angle += 0.05
-                let total = 0;
-                while (total < angle){
-                    earth.rotation.y -= 0.05;   
-                    total += 0.05;
-                    await sleep(15);
-                }
-            }
-            flag.material.color.setHex(0xff0000); 
-            $(`#${userName}`).on('click', BackColor); 
-
-            function BackColor(){
-              flag.material.color.setHex(0x000000)
-              $(`#${userName}`).on('click', rotateToFlag); 
-              $(`#${userName}`).unbind('click',BackColor);
-            }
-
-            $(`#${userName}`).unbind('click',rotateToFlag);
-
-            // if(spritePos.y < 0){
-            //     //angle -= 0.02
-            //     let total = 0;
-            //     while (total < angle2){
-            //         earth.rotation.x += 0.05; 
-            //         total += 0.05;
-            //         await sleep(15);
-            //     }
-            // }
-            // else{
-            //     //angle += 0.02
-            //     let total = 0;
-            //     while (total < angle2){
-            //         earth.rotation.x += 0.05; 
-            //         total += 0.05;
-            //         await sleep(15);
-            //     }
-            // }
-            }
+        // normalize Vectors
+        cv2.normalize();
+        sv2.normalize();
+        // dot product
+        var dot = cv2.dot(sv2);
+        var angle = (1 - (dot + 1) / 2) * Math.PI  ;
         
-    }
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+          }
+
+        if(spritePos.x < 0){
+            angle -= 0.05
+            let total = 0;
+            while (total < angle){
+                earth.rotation.y += 0.05; 
+                total += 0.05;
+                await sleep(15);
+            }
+        }
+        else{
+            angle += 0.05
+            let total = 0;
+            while (total < angle){
+                earth.rotation.y -= 0.05;   
+                total += 0.05;
+                await sleep(15);
+            }
+        }
+        flag.material.color.setHex(0xff0000); 
+        $(`#${userName}`).on('click', BackColor); 
+
+        function BackColor(){
+          flag.material.color.setHex(0x000000)
+          $(`#${userName}`).on('click', rotateToFlag); 
+          $(`#${userName}`).unbind('click',BackColor);
+        }
+
+        $(`#${userName}`).unbind('click',rotateToFlag);
+
+        }
+        
 }
 
-// function highLightFlag(){
-//     alert("hh");
-// }
 
 window.addEventListener('resize', onWindowResize,false);
 init();
 animate();
 
-let users = [["Wangyibo",40,90],["Xiaozhan",37,-105],["coffee",-33,151],["milk",40.82,140.74],["coke",19.897,-155.58]]
-let profile = ["similarity_score：99%","Beijing, China"]
-
-addUsers(users);
-// objects.push(earth);
-
 raycaster = new THREE.Raycaster();
 mouse = new THREE.Vector2();
 document.addEventListener("mousedown",onDocumentMouseDown);
 
-$(".users").click(loadProfile)
-function loadProfile(event){
+async function loadProfile(event){
+  let username = event.target.id;
+  let token = getUrlVars()["token"];
+  let axiosInstance = axios.create({
+    headers: { Authorization: `Bearer ${token}` },
+    baseURL: `http://localhost:3000`
+});
+  const user_info = await axiosInstance.get('/private/' + username);
+  let user_profile = user_info.data.result.profile;
+  let country = user_profile.country;
+  let city = user_profile.city;
+  let phoneNumber = user_profile.phoneNumber;
+  let email = user_profile.email;
     $(event.target).append(
     `<div class="box">
   <article class="media">
@@ -338,30 +307,17 @@ function loadProfile(event){
     <div class="media-content">
       <div class="content">
         <p>
-          <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
+          <strong> ${username} </strong> 
           <br>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+          <small>Country: ${country}</small>
+          <br>
+          <small>City: ${city}</small>
+          <br>
+          <small>email: ${email}</small>
+          <br>
+          <small>phoneNumber: ${phoneNumber}</small>
         </p>
       </div>
-      <nav class="level is-mobile">
-        <div class="level-left">
-          <a class="level-item" aria-label="reply">
-            <span class="icon is-small">
-              <i class="fas fa-reply" aria-hidden="true"></i>
-            </span>
-          </a>
-          <a class="level-item" aria-label="retweet">
-            <span class="icon is-small">
-              <i class="fas fa-retweet" aria-hidden="true"></i>
-            </span>
-          </a>
-          <a class="level-item" aria-label="like">
-            <span class="icon is-small">
-              <i class="fas fa-heart" aria-hidden="true"></i>
-            </span>
-          </a>
-        </div>
-      </nav>
     </div>
   </article>
 </div>
@@ -407,5 +363,47 @@ function onDocumentMouseDown(event){
     }
 }
 
+// load users
 
+
+
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+      vars[key] = value;
+  });
+  return vars;
+}
+
+async function loadUsers(){
+  let token = getUrlVars()["token"];
+  let axiosInstance = axios.create({
+    headers: { Authorization: `Bearer ${token}` },
+    baseURL: `http://localhost:3000`
+});
+
+const response1 = await axiosInstance.get('/account/status', {});
+let username = response1.data.user.name;
+const response2 = await axiosInstance.get('/private/' + username);
+let friends = response2.data.result.closest10;
+let lat = response2.data.result.location.lat;
+let lng = response2.data.result.location.lng;
+let flag = addFlag(lat,lng,0x6a0dad,username);
+
+for (let i = 0; i < friends.length;i++){
+  let fri = friends[i];
+  if (fri != null){
+    if (fri != username){
+  const friend_info = await axiosInstance.get('/private/' + fri);
+  let lat = friend_info.data.result.location.lat;
+  let lng = friend_info.data.result.location.lng;
+  addUser(fri,lat,lng)
+  }
+  }
+
+}
+
+
+}
+loadUsers();
 
