@@ -14,6 +14,12 @@ $(function() {
                 "pass": passval,
             }
         });
+
+        if (response.status == 200) {
+            window.location.replace("../ball/index.html?token=" + response.data.jwt);
+        }
         console.log(response)
     })
+
+
   });

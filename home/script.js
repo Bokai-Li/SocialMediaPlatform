@@ -1,4 +1,3 @@
-
 const handleNewButtonPress = function(event) {
     $(`<textarea id="writenew" class="textarea" maxlength="280" placeholder="Create your new tweet here (max 280 characters)"></textarea>
        <button id="newpost" class="button is-danger">
@@ -139,14 +138,19 @@ async function readTweets(id){
 }
 
 async function postTweets(){
-    const result = await axios({
-        method: 'POST',
-        url: 'http://localhost:3000/private',
+    //let token = getUrlVars()["token"];
+    axiosInstance = axios.create({
+        //headers: {Authorization: `Bearer ${token}`},
+        baseURL: `http://localhost:3000/public`
+    });
+
+    const response = await axiosInstance.post('', {
         data: {
-          "tweet": $("#writenew").val()
+            "author": user,
+            "tweet": $("#writenew").val()
         },
     });
-    console.log(result);
+    console.log(response);
 }
 
 async function retweet(id){
@@ -332,4 +336,12 @@ async function view() {
 
 view();
 $('#newtweet').on('click', handleNewButtonPress); 
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+        vars[key] = value;
+    });
+    return vars;
+}
 
