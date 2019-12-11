@@ -66,10 +66,8 @@ async function submit(e) {
     });
     const response1 = await axiosInstance.get('/account/status', {});
     let username = response1.data.user.name;
-    const response = await axiosInstance.post('/private/' + username + '/', {
-        data: {
-            score: score,
-        }
+    const response = await axiosInstance.post('/private/' + username + '/score', {
+        data: score,
     });
     let closest = await findClosest(token);
     const response2 = await axiosInstance.post('/private/' + username + '/closest10', {
