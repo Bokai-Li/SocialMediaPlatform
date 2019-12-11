@@ -73,38 +73,42 @@
                                     <img class="headimg" src="wyb.JPG" alt="myimage">
                                     &nbsp;&nbsp;
                                     <span class="author">
-                                        ${tweet.author}
+                                        ${tweet.id.author}
                                     </span>  
-                                    <p>${tweet.body}</p>
+                                    <p>${tweet.id.body}</p>
                                 </div>
                     
                                 <div class="content has-text-left">
                                     @Shanghai-Xuhui
                                     <br>
-                                    8:45 11.29.2019
+                                    ${tweet.id.createdAt}
                                 </div>
-                        
+                    
                                 <div class="content with-border" >
                                         <div class="columns" id="button">
-                                                <div class="column is-4">
+                                                <div class="column is-3">
                                                     <button class="like three-button " id="like${tweet.id}">
-                                                        <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
+                                                        <i class="fas fa-thumbs-up"></i> Like (${tweet.id.likeCount})
                                                     </button>
                                                 </div>
-                                                <div class="column is-4">
+                                                <div class="column is-3">
                                                     <button class="three-button" id="reply${tweet.id}">
-                                                        <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
+                                                        <i class="fas fa-comment-dots"></i> Reply (${tweet.id.replyCount})
                                                     </button>
                                                 </div>
-                                                <div class="column is-4">
-                                                    <button class="three-button" id="retweet${tweet.id}">
-                                                        <i class="fas fa-retweet"></i> Retweet (${tweet.retweetCount})
+                                                <div class="column is-3">
+                                                    <button class="three-button" id="edit${tweet.id}">
+                                                        <i class="fas fa-user-edit"></i> Edit
                                                     </button>
                                                 </div>
+                                                <div class="column is-3">
+                                                    <button class="three-button" id="delete${tweet.id}">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </div>
+                    
                                         </div>
                                 </div>
-                                
-                    
                     
                                 <div class="content replyblockbefore" id="replycontent${tweet.id}">
                     

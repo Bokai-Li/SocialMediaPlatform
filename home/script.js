@@ -54,19 +54,14 @@ const renderTweet = function(tweet) {
     
             <div class="content with-border" >
                     <div class="columns" id="button">
-                            <div class="column is-4">
+                            <div class="column is-6">
                                 <button class="like three-button " id="like${tweet.id}">
                                     <i class="fas fa-thumbs-up"></i> Like (${tweet.id.likeCount})
                                 </button>
                             </div>
-                            <div class="column is-4">
+                            <div class="column is-6">
                                 <button class="three-button" id="reply${tweet.id}">
                                     <i class="fas fa-comment-dots"></i> Reply (${tweet.id.replyCount})
-                                </button>
-                            </div>
-                            <div class="column is-4">
-                                <button class="three-button" id="retweet${tweet.id}">
-                                    <i class="fas fa-retweet"></i> Retweet (${tweet.id.retweetCount})
                                 </button>
                             </div>
                     </div>
@@ -115,16 +110,11 @@ const renderMyTweet = function(tweet){
                                 </button>
                             </div>
                             <div class="column is-3">
-                                <button class="three-button" id="retweet${tweet.id}">
-                                    <i class="fas fa-retweet"></i> Retweet (${tweet.id.retweetCount})
-                                </button>
-                            </div>
-                            <div class="column is-2">
                                 <button class="three-button" id="edit${tweet.id}">
                                     <i class="fas fa-user-edit"></i> Edit
                                 </button>
                             </div>
-                            <div class="column is-1">
+                            <div class="column is-3">
                                 <button class="three-button" id="delete${tweet.id}">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -138,16 +128,12 @@ const renderMyTweet = function(tweet){
             </div>
         </div>
     </div>
-`;
-
-            
-
-   
+`; 
 }
 
 async function readTweets(id){
     const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
-    return response;
+    return response.data.result;
 }
 
 async function postTweets(){ 
@@ -184,42 +170,58 @@ async function reply(id){
 
 async function like(id){
     const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
-    const result = await axios({
-        method: 'put',
-        url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}/like`,
-        withCredentials: true,
-    });
+    let temp = response.data.result;
+    if(!temp.isLiked){
+        deleteTweets(id);
+        temp.isLiked = true;
+        temp.likeCount += 1;
+        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/', {
+            data: {
+                [id]: {
+                    temp
+                }  
+            }   
+        });
+    }
+    
 }
 
 async function unlike(id){
-    const result = await axios({
-        method: 'put',
-        url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}/unlike`,
-        withCredentials: true,
-    });
+    const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
+    let temp = response.data.result;
+    if(temp.isLiked){
+        deleteTweets(id);
+        temp.isLiked = false;
+        temp.likeCount -= 1;
+        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet', {
+            data: {
+                [id]: {
+                    temp
+                }  
+            }   
+        });
+    } 
 }
 
 async function deleteTweets(id){
-    const result = await axios({
-        method: 'delete',
-        url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}`,
-        withCredentials: true,
-    });
+    const response = await axiosInstance.delete('/private' + currentuser + `/tweet/${id}`, {});
 }
 
 async function getTweets(){
     const response = await axiosInstance.get('/private' + currentuser + '/tweet', {});
-    return response;
+    return response.data.result;
 }
 
 async function updateTweets(id){
-    const result = await axios({
-        method: 'put',
-        url: `https://comp426fa19.cs.unc.edu/a09/tweets/${id}`,
-        withCredentials: true,
+    const response = await axiosInstance.get('/private' + currentuser + `/tweet/${id}`, {});
+    let temp = response.data.result;
+    temp.body = $("#underedit").val();
+    const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/', {
         data: {
-          body: $("#underedit").val()
-        },
+            [id]: {
+                temp
+            }  
+        }   
     });
 }
 
@@ -257,24 +259,24 @@ async function view() {
             }
         })
 
-        $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
-            let retweet_form = `
+        // $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
+        //     let retweet_form = `
 
-                <div class="card" id="rtcard${id}">
-                    <textarea id="readyretweet" class="textarea" maxlength="280">${body}</textarea>
-                    <button class="button is-link retweet">retweet</button>
-                    <button id="cancelretweet" class="button is-warning cancel">Cancel</button>
-                </div>
-            `;
-            $(retweet_form).insertAfter(`#${id}`);
-            $('.retweet').on('click', function(){
-                retweet(id);
-            });
-            $('#cancelretweet').on('click', function(){
-                $(`#rtcard${id}`).remove();
-            });
+        //         <div class="card" id="rtcard${id}">
+        //             <textarea id="readyretweet" class="textarea" maxlength="280">${body}</textarea>
+        //             <button class="button is-link retweet">retweet</button>
+        //             <button id="cancelretweet" class="button is-warning cancel">Cancel</button>
+        //         </div>
+        //     `;
+        //     $(retweet_form).insertAfter(`#${id}`);
+        //     $('.retweet').on('click', function(){
+        //         retweet(id);
+        //     });
+        //     $('#cancelretweet').on('click', function(){
+        //         $(`#rtcard${id}`).remove();
+        //     });
 
-        }); 
+        // }); 
 
         $(`#reply${id}`).click(function(){                    // allow user to reply to tweets
             let reply_form = `

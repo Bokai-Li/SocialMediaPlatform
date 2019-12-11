@@ -1,3 +1,18 @@
+//🍉Debounce function referenced from https://davidwalsh.name/javascript-debounce-function
+function debounce(func, wait, immediate) {
+ var timeout;
+ return function() {
+  var context = this, args = arguments;
+  var later = function() {
+   timeout = null;
+   if (!immediate) func.apply(context, args);
+  };
+  var callNow = immediate && !timeout;
+  clearTimeout(timeout);
+  timeout = setTimeout(later, wait);
+  if (callNow) func.apply(context, args);
+ };
+};
 async function handleInput(e){
     $("#autocomplete").empty()
     const location = await axios({
@@ -74,7 +89,7 @@ async function populateCityCountry(e){
 $(async function() {
     const $btn = $('#submitbtn');
     const $message = $('#message');
-    $('#city').bind("input",handleInput);
+    $('#city').bind("input",debounce(handleInput, 300));
 
     $btn.click(async function(e) {
         e.preventDefault();
@@ -85,9 +100,19 @@ $(async function() {
         emailval = $('#email').serializeArray()[0].value;
         passval = $('#password1').serializeArray()[0].value;
         passval2 = $('#password2').serializeArray()[0].value;
-
+        cityvalencoded = cityval.replace(' ', '+')
+        countryvalencoded = countryval.replace(' ', '+')
         if ($('#password1').val().length >= 8) {
             if (passval == passval2) {
+                var googleUrl='https://maps.googleapis.com/maps/api/geocode/json?address='+cityvalencoded+',+'+countryvalencoded+'&key=AIzaSyCpWVcPj5Oar0WSPGmBVOBraCZEbOcRz1I'
+                const geo = await axios({
+                    method: 'GET',
+                    url: googleUrl
+                });
+                if(geo.data.status=="ZERO_RESULTS"){
+                    document.getElementById("message").innerHTML = "Sorry! Location not found!";
+                    return
+                }
                 const response = await axios({
                     method: 'POST',
                     url: 'http://localhost:3000/account/create',
@@ -101,23 +126,38 @@ $(async function() {
                             "email": emailval,
                         }
                     }
-                });
-                console.log(response);
-                const response2 = await axios({
-                    method: 'POST',
-                    url: 'http://localhost:3000/account/login',
-                    data: {
-                        "name": nameval,
-                        "pass": passval,
-                    }
+                }).catch(()=>{
+                    document.getElementById("message").innerHTML = "Sorry! The Username is already used!";
                 });
                 if (response.status == 200) {
+                    const response2 = await axios({
+                        method: 'POST',
+                        url: 'http://localhost:3000/account/login',
+                        data: {
+                            "name": nameval,
+                            "pass": passval,
+                        }
+                    })
                     let token = response2.data.jwt;
                     axiosInstance = axios.create({
                         headers: { Authorization: `Bearer ${token}` },
                         baseURL: `http://localhost:3000`
                     });
-                    const response3 = await axiosInstance.post('/user/profile', {
+                    await axiosInstance.post('/private/' + nameval.toLowerCase() + '/location',{
+                        data:{
+                            "lat":geo.data.results[0].geometry.location.lat,
+                            "city":geo.data.results[0].geometry.location.lng,
+                        }
+                    });
+                    await axiosInstance.post('/user/profile', {
+                        data: {
+                            "country": countryval,
+                            "city": cityval,
+                            "phoneNumber": phoneNumberval,
+                            "email": emailval,
+                        }
+                    })
+                    const response4 = await axiosInstance.post('/private/' + nameval.toLowerCase() + '/profile', {
                         data: {
                             "country": countryval,
                             "city": cityval,
@@ -128,10 +168,10 @@ $(async function() {
                     window.location.replace("../test_page/index.html?token=" + token)
                 }
             } else {
-                document.getElementById("message").innerHTML = "Sorry! Two password input does not match!";
+                document.getElementById("message").innerHTML = "Sorry! Two passwords do not match!";
             }
         } else {
-            document.getElementById("message").innerHTML = "Password need to contain at least 8 characters!";
+            document.getElementById("message").innerHTML = "Password needs to contain at least 8 characters!";
         }
     })
 })

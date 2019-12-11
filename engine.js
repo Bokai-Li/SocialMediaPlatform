@@ -24,11 +24,8 @@ $(function () {
 
             const response3 = await axiosInstance.get('/private/' + nameval + '/score');
             let score = response3.data.result;
-            const response2 = await axiosInstance.post('/private/' + nameval, {
-                data: {
-                    score: score,
-                    closest10: closest
-                }
+            const response2 = await axiosInstance.post('/private/' + nameval + '/closest10', {
+                data: closest
             });
             console.log(response2)
             window.location.replace("/ball/index.html?token=" + token);
@@ -36,24 +33,29 @@ $(function () {
     })
 });
 
-async function findClosest(token, nameval) {
+async function findClosest(token) {
     axiosInstance = axios.create({
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
     });
-    const response1 = await axiosInstance.get('/private');
     const response3 = await axiosInstance.get('/private/' + nameval + '/score');
     let score = response3.data.result;
-    let closest = new Array(10);
+    const response1 = await axiosInstance.get('/private');
     let private_data = response1.data.result;
     let scores = new Array(private_data.length);
     for(let i = 0; i < private_data.length; i++) {
+        let deviation = 0;
         const response2 = await axiosInstance.get('/private/' + private_data[i]);
-        scores[i] = response2.data.result.score;
-        private_data[i] = {username: private_data[i], score: scores[i]};
+        console.log(response2)
+        for(let j = 0; j < 20; j++) {
+            scores[j] = response2.data.result.score[j];
+            deviation = Math.abs(scores[j] - score[j]);
+        }
+        private_data[i] = {username: private_data[i], deviation: deviation};
     }
-    private_data.sort((a, b) => Math.abs(b.score-score)<Math.abs(a.score-score));
-    let bound = (private_data.length < 11) ? private_data: 11;
+    private_data.sort((a, b) => b.deviation<a.deviation);
+    let bound = (private_data.length < 11) ? private_data.length: 11;
+    let closest = new Array(bound);
     for(let i = 0; i < bound; i++) {
         closest[i] = private_data[i].username;
     }
