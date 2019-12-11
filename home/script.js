@@ -5,9 +5,11 @@ function getUrlVars() {
     });
     return vars;
 }
-let currentuser = getUrlVars()["username"];
 let token = getUrlVars()["token"];
 let username;
+let currentuser = getUrlVars()["username"];
+
+
 
 async function getUsername(){
     axiosInstance = axios.create({
@@ -52,7 +54,7 @@ const renderTweet = function(tweet, id) {
             <div class="content has-text-left">
                 @Shanghai-Xuhui
                 <br>
-                ${tweet.createdAt}
+                ${tweet.createdAt.toDateString()}
             </div>
     
             <div class="content with-border" >
@@ -164,7 +166,7 @@ async function postTweets(){
                 "likeCount": 0,
                 "replies": [],
                 "createdAt": Date.now(),
-                "updatedAt": Date.now(),
+                //"updatedAt": Date.now(),
             
         }   
     });
@@ -176,13 +178,28 @@ async function reply(id){
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
     });
-    const response = await axiosInstance.post('/private/' + currentuser + `/tweet/${id}/replies`,{
-        data: [{
-            "author": username,
-            "parent": id,
-            "body": $("#readyreply").val(),
-        }],
-        type: "merge",
+    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
+    let temp = response.data.result;
+    deleteTweets(id);
+    temp.replies.push({
+        "author": username,
+        "parent": id,
+        "body": $("#readyreply").val(),
+    });
+    temp.replyCount += 1;
+    const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
+        data: {
+            "type": temp.type,
+            "author": temp.author,
+            "body": temp.body,
+            "isMine": true,
+            "isLiked": temp.isLiked,
+            "replyCount":temp.replyCount,
+            "likeCount": temp.likeCount,
+            "replies": temp.replies,
+            "createdAt": temp.createdAt,
+            "updatedAt": temp.updatedAt,
+        }   
     });
 }
 
@@ -257,7 +274,6 @@ async function getTweets(){
         baseURL: `http://localhost:3000`
     });
     const response = await axiosInstance.get('/private/' + currentuser + '/tweet');
-    console.log(response.data.result);
     return response.data.result;
 }
 
@@ -279,18 +295,30 @@ async function updateTweets(id){
     const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
     temp.body = $("#underedit").val();
-    const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/', {
+    const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
         data: {
-            [id]: {
-                temp
-            }  
+            "type": temp.type,
+            "author": temp.author,
+            "body": temp.body,
+            "isMine": true,
+            "isLiked": temp.isLiked,
+            "replyCount":temp.replyCount,
+            "likeCount": temp.likeCount,
+            "replies": temp.replies,
+            "createdAt": temp.createdAt,
+            "updatedAt": temp.updatedAt,
         }   
     });
 }
 
 async function view() {
     username = await getUsername();
+    if(typeof currentuser == "undefined"){
+        currentuser = username;
+    }
+
     $('#gohome').attr("href", `/home/index.html?token=${token}&username=${username}`);
+    $('#goearth').attr("href", `/ball/index.html?token=${token}`);
     let $root = $(".tweets");
     
     let tweets = await getTweets();
@@ -399,21 +427,8 @@ async function view() {
 
     }
 
-   
-}
-
-view();
-$('#newtweet').on('click', handleNewButtonPress); 
-
-
-/******* ****************************************** right panel *********************************************************/
-async function findTenFriends(){
-    const response = await axiosInstance.get('/private/' + username + `closest10`, {});
-    return response.data.result;
-}
-
-async function panel(){
-    let friends = findTenFriends();
+    let friends = await findTenFriends();
+    console.log(friends);
     for(let i = 0; i < friends.length; i++){
         let bar = `<a class="panel-block is-active">
                         <span class="panel-icon">
@@ -422,4 +437,20 @@ async function panel(){
                     </a>`;
         $(bar).appendTo(".panel");
     }
+
+   
+}
+
+view();
+$('#newtweet').on('click', handleNewButtonPress); 
+panel();
+
+/******* ****************************************** right panel *********************************************************/
+async function findTenFriends(){
+    const response = await axiosInstance.get('/private/' + username + '/closest10');
+    return response.data.result;
+}
+
+async function panel(){
+    
 }
