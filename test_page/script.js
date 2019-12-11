@@ -45,23 +45,6 @@ function loadDom() {
     $(".option").on("click", record);
 }
 
-<<<<<<< HEAD
-async function submit(e){
-    e.preventDefault();
-    const response = await axios({
-        method: 'POST',
-        url: 'http://localhost:3000/user/' + usrname,
-        data: {
-            "score": score,
-        }
-    });
-    let similar = new Array(10);
-    const p = await axios({
-        method: 'GET',
-        url: 'http://localhost:3000/private',
-    })
-    console.log(response);
-=======
 function getUrlVars() {
     var vars = {};
     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
@@ -82,7 +65,6 @@ async function submit(e) {
         data: score
     })
     console.log(response2);
->>>>>>> afb9c70c078bdc286eff74679afc39efedf58e0d
 }
 
 async function record(e) {
