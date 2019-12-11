@@ -1,3 +1,3 @@
 var config = {
-    gmapKey : 'AIzaSyDw9owOBq9YfXkB795roT1w5z0ZRUIRiSs',
+    gmapKey : 'AIzaSyCDW4JLygX_OhP4A8u5bRrGamDwaawj8cY',
   }
