@@ -176,7 +176,7 @@ async function postTweets(){
                 "author": username,
                 "body": $("#writenew").val(),
                 "isMine": true,
-                "isLiked": false,
+                "isLiked": new Array(0),
                 "replyCount":0,
                 "isLiked": new Array(0),
                 'likeCount':0,
@@ -383,6 +383,7 @@ async function view() {
                     }   
                 });
                 
+
             }
             $(`#like${id}`).unbind('click',myLike);
             $(`#like${id}`).on('click',myUnlike);
