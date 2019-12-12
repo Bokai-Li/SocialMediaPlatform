@@ -159,7 +159,7 @@ async function postTweets(){
                 "author": username,
                 "body": $("#writenew").val(),
                 "isMine": true,
-                "isLiked": false,
+                "isLiked": new Array(0),
                 "replyCount":0,
                 "likeCount": 0,
                 "replies": [],
@@ -208,9 +208,9 @@ async function like(id){
     });
     const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
-    if(!temp.isLiked){
+    if(!temp.isLiked.includes(username)){
         deleteTweets(id);
-        temp.isLiked = true;
+        temp.isLiked.push(username);
         temp.likeCount += 1;
         $(`#likecount${id}`).html(`(${temp.likeCount})`);
         const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
@@ -239,9 +239,10 @@ async function unlike(id){
     });
     const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
-    if(temp.isLiked){
+    if(temp.isLiked.includes(username)){
         deleteTweets(id);
-        temp.isLiked = false;
+        let index = temp.isliked.indexOf(username);
+        temp.isLiked.splice(index, 1);
         temp.likeCount -= 1;
         $(`#likecount${id}`).html(`(${temp.likeCount})`);
         const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
@@ -339,20 +340,21 @@ async function view() {
         let body = tweets[i].body;
         let detail = await readTweets(id);
 
-        if(tweets[i].isLiked){
+        if(tweets[i].isLiked.includes(username)){
             $(`#like${id}`).toggleClass('active');
         }
        
         $(`#like${id}`).click(function(){                     
             //$(`#like${id}`).toggleClass('active');              // indicate if user likes one tweet
-            if(tweets[i].isLiked){
+            if(tweets[i].isLiked.includes(username)){
                 $(`#like${id}`).toggleClass('active');
                 unlike(id);
-                tweets[i].isLiked = false;
+                let index = temp.isliked.indexOf(username);
+                temp.isLiked.splice(index, 1);
             }else{
                 $(`#like${id}`).toggleClass('active');
                 like(id);
-                tweets[i].isLiked = true;
+                temp.isLiked.push(username);
             }
         })
 
