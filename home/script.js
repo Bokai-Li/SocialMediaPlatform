@@ -521,11 +521,6 @@ async function view() {
                 location.reload();
             });
         }
-            
-
-        }
-        
-
     }
 
     let friends = await findTenFriends();
@@ -538,8 +533,6 @@ async function view() {
                     </a>`;
         $(bar).appendTo(".panel");
     }
-
-   
 }
 
 view();
