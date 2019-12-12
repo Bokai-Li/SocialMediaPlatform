@@ -275,7 +275,22 @@ async function getTweets(){
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
     });
-    const response = await axiosInstance.get('/private/' + currentuser + '/tweet');
+    const userInfo = await axiosInstance.get('/private/' + currentuser);
+    let UserKeys = Object.keys(userInfo.data.result);
+    let haveTweet = false
+    for (let i=0; i < UserKeys.length; i++){
+        if (UserKeys[i] == "tweet"){
+            haveTweet = true;
+        }
+    }
+
+    let response;
+    if (haveTweet){
+    response = await axiosInstance.get('/private/' + currentuser + '/tweet');
+    }
+    else{
+        return null;
+    }
     return response.data.result;
 }
 
@@ -323,8 +338,23 @@ async function view() {
     $('#goprofile').attr("href", `/profile/index.html?token=${token}&username=${username}`);
     
     let $root = $(".tweets");
-    
     let tweets = await getTweets();
+    if (tweets == null){
+        $(".tweets").append(`<p style="font-size:30px;">Nothing here yet.</p>`);
+
+        let friends = await findTenFriends();
+        for(let i = 0; i < friends.length; i++){
+            let url = "../home/index.html?token=" + token + "&username=" + friends[i]
+            let bar = `<a href=${url} class="panel-block is-active">
+                            <span class="panel-icon">
+                            <i class="fas fa-people-carry"></i>
+                            </span> ${friends[i]}
+                        </a>`;
+            $(bar).appendTo(".panel");
+        }
+        return
+    }
+
     if(currentuser == username){
         for(let i = Object.keys(tweets).length - 1; i >= 0; i--){ 
             $root.append(renderMyTweet(tweets[i], i));  
@@ -435,7 +465,8 @@ async function view() {
 
     let friends = await findTenFriends();
     for(let i = 0; i < friends.length; i++){
-        let bar = `<a class="panel-block is-active">
+        let url = "../home/index.html?token=" + token + "&username=" + friends[i]
+        let bar = `<a href=${url} class="panel-block is-active">
                         <span class="panel-icon">
                         <i class="fas fa-people-carry"></i>
                         </span> ${friends[i]}
