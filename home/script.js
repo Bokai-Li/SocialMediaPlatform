@@ -167,7 +167,7 @@ async function postTweets(){
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
     });
-    let curr_tweet = await getMyTweets();
+        let curr_tweet = await getMyTweets();
     let id = Object.keys(curr_tweet).length;
     const response = await axiosInstance.post('/private/' + username + '/tweet/' + id, {
         data: {
@@ -258,8 +258,35 @@ async function getMyTweets(){
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
     });
-    const response = await axiosInstance.get('/private/' + username + '/tweet');
-    return response.data.result;
+    try{
+        const response = await axiosInstance.get('/private/' + username + '/tweet');   
+        return response.data.result;
+    } catch(e) {
+        console.log("catch")
+        axiosInstance = axios.create({
+            headers: { Authorization: `Bearer ${token}` },
+            baseURL: `http://localhost:3000`
+        });
+        let id = 0;
+        const response = await axiosInstance.post('/private/' + username + '/tweet/' + id, {
+            data: {
+               
+                    "type": "tweet",
+                    "author": username,
+                    "body": $("#writenew").val(),
+                    "isMine": true,
+                    "isLiked": new Array(0),
+                    "replyCount":0,
+                    "isLiked": new Array(0),
+                    'likeCount':0,
+                    "replies": [],
+                    "createdAt": Date.now(),
+                    //"updatedAt": Date.now(),
+                
+            }   
+        });  
+        location.reload()
+    }
 }
 
 async function updateTweets(id){
