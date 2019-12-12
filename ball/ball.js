@@ -221,7 +221,7 @@ function addUser(user,lat,lng,color,home){
       $("#my_home").on('click',rotateToFlag);
     }
     else{
-    $("#location").append(`&nbsp; <i class="fas fa-lg fa-address-card"></i> &nbsp; <span class=users style="margin-bottom:10px;" id=${userName}>${userName}</span><br>`);
+    $("#location").append(`<span>&nbsp; <i class="fas fa-lg fa-address-card"></i> &nbsp; <span class=users style="margin-bottom:10px;" id=${userName}>${userName}</span><br>`);
     $(`#${userName}`).on('click',rotateToFlag);
     $(`#${userName}`).on('click', loadProfile)
     }
@@ -318,7 +318,7 @@ async function loadProfile(event){
   <article class="media">
     <div class="media-left">
       <figure class="image is-64x64">
-        <img src="./cat.jpg" alt="Image">
+        <img src="https://bulma.io/images/placeholders/128x128.png" alt="Image">
       </figure>
     </div>
     <div class="media-content">
