@@ -16,15 +16,15 @@ $(function () {
         });
         let token = response.data.jwt;
         if (response.status == 200) {
-            let closest = await findClosest(token, nameval);
+            let closest = await findClosest(token, nameval.toLowerCase());
             axiosInstance = axios.create({
                 headers: { Authorization: `Bearer ${token}` },
                 baseURL: `http://localhost:3000`
             });
 
-            const response3 = await axiosInstance.get('/private/' + nameval + '/score');
+            const response3 = await axiosInstance.get('/private/' + nameval.toLowerCase() + '/score');
             let score = response3.data.result;
-            const response2 = await axiosInstance.post('/private/' + nameval + '/closest10', {
+            const response2 = await axiosInstance.post('/private/' + nameval.toLowerCase() + '/closest10', {
                 data: closest
             });
             console.log(response2)
@@ -33,7 +33,7 @@ $(function () {
     })
 });
 
-async function findClosest(token) {
+async function findClosest(token, nameval) {
     axiosInstance = axios.create({
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
