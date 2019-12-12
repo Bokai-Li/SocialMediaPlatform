@@ -319,6 +319,8 @@ async function view() {
 
     $('#gohome').attr("href", `/home/index.html?token=${token}&username=${username}`);
     $('#goearth').attr("href", `/ball/index.html?token=${token}`);
+    $('#goprofile').attr("href", `/profile/index.html?token=${token}&username=${username}`);
+    
     let $root = $(".tweets");
     
     let tweets = await getTweets();
