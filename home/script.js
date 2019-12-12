@@ -52,7 +52,7 @@ const renderTweet = function(tweet, id) {
             </div>
 
             <div class="content has-text-left">
-                @Shanghai-Xuhui
+            <span class="loc" username=${tweet.author}></span>
                 <br>
                 ${tweet.createdAt}
             </div>
@@ -97,7 +97,7 @@ const renderMyTweet = function(tweet, id){
             </div>
 
             <div class="content has-text-left">
-                @Shanghai-Xuhui
+            <span class="loc" username="${tweet.author}"></span>
                 <br>
                 ${tweet.createdAt}
             </div>
@@ -354,7 +354,18 @@ async function view() {
             }
         }    
     }
-    
+    $(function() {
+        $(".loc").each(async function() {
+            var username = $(this).attr('username');
+            axiosInstance = axios.create({
+                headers: { Authorization: `Bearer ${token}` },
+                baseURL: `http://localhost:3000`
+            });
+            const response1 = await axiosInstance.get('/private/'+username+'/profile', {});
+            var {country, city} = response1.data.result;
+            $(this).html(city + ', ' + country);
+        });
+    });
     for(let i = 0; i < Object.keys(tweets).length; i++){
         let id = i;
         if (tweets[i] != undefined){
