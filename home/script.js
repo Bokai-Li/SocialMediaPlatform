@@ -54,19 +54,19 @@ const renderTweet = function(tweet, id) {
             <div class="content has-text-left">
                 @Shanghai-Xuhui
                 <br>
-                ${tweet.createdAt.toDateString()}
+                ${tweet.createdAt}
             </div>
     
             <div class="content with-border" >
                     <div class="columns" id="button">
                             <div class="column is-6">
                                 <button class="like three-button " id="like${id}">
-                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
+                                    <i class="fas fa-thumbs-up"></i> Like <span id="likecount${id}">(${tweet.likeCount})</span>
                                 </button>
                             </div>
                             <div class="column is-6">
                                 <button class="three-button" id="reply${id}">
-                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
+                                    <i class="fas fa-comment-dots"></i> Reply <span id="replycount${id}">(${tweet.replyCount})</span>
                                 </button>
                             </div>
                     </div>
@@ -106,12 +106,12 @@ const renderMyTweet = function(tweet, id){
                     <div class="columns" id="button">
                             <div class="column is-3">
                                 <button class="like three-button " id="like${id}">
-                                    <i class="fas fa-thumbs-up"></i> Like (${tweet.likeCount})
+                                    <i class="fas fa-thumbs-up"></i> Like <span id="likecount${id}">(${tweet.likeCount})</span>
                                 </button>
                             </div>
                             <div class="column is-3">
                                 <button class="three-button" id="reply${id}">
-                                    <i class="fas fa-comment-dots"></i> Reply (${tweet.replyCount})
+                                    <i class="fas fa-comment-dots"></i> Reply <span id="replycount${id}">(${tweet.replyCount})</span>
                                 </button>
                             </div>
                             <div class="column is-3">
@@ -151,9 +151,7 @@ async function postTweets(){
         baseURL: `http://localhost:3000`
     });
     let curr_tweet = await getMyTweets();
-    console.log(curr_tweet);
     let id = Object.keys(curr_tweet).length;
-    console.log(id);
     const response = await axiosInstance.post('/private/' + username + '/tweet/' + id, {
         data: {
            
@@ -169,8 +167,7 @@ async function postTweets(){
                 //"updatedAt": Date.now(),
             
         }   
-    });
-    console.log(response);
+    });  
 }
 
 async function reply(id){
@@ -187,6 +184,7 @@ async function reply(id){
         "body": $("#readyreply").val(),
     });
     temp.replyCount += 1;
+    $(`#replycount${id}`).html(`(${temp.replyCount})`);
     const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
         data: {
             "type": temp.type,
@@ -214,6 +212,7 @@ async function like(id){
         deleteTweets(id);
         temp.isLiked = true;
         temp.likeCount += 1;
+        $(`#likecount${id}`).html(`(${temp.likeCount})`);
         const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
             data: {
                 "type": temp.type,
@@ -228,6 +227,7 @@ async function like(id){
                 "updatedAt": temp.updatedAt,
             }   
         });
+        
     }
     
 }
@@ -243,6 +243,7 @@ async function unlike(id){
         deleteTweets(id);
         temp.isLiked = false;
         temp.likeCount -= 1;
+        $(`#likecount${id}`).html(`(${temp.likeCount})`);
         const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
             data: {
                 "type": temp.type,
@@ -257,7 +258,7 @@ async function unlike(id){
                 "updatedAt": temp.updatedAt,
             }   
         });
-    } 
+    }
 }
 
 async function deleteTweets(id){
@@ -283,7 +284,6 @@ async function getMyTweets(){
         baseURL: `http://localhost:3000`
     });
     const response = await axiosInstance.get('/private/' + username + '/tweet');
-    console.log(response.data.result);
     return response.data.result;
 }
 
@@ -319,6 +319,8 @@ async function view() {
 
     $('#gohome').attr("href", `/home/index.html?token=${token}&username=${username}`);
     $('#goearth').attr("href", `/ball/index.html?token=${token}`);
+    $('#goprofile').attr("href", `/profile/index.html?token=${token}&username=${username}`);
+    
     let $root = $(".tweets");
     
     let tweets = await getTweets();
@@ -346,9 +348,11 @@ async function view() {
             if(tweets[i].isLiked){
                 $(`#like${id}`).toggleClass('active');
                 unlike(id);
+                tweets[i].isLiked = false;
             }else{
                 $(`#like${id}`).toggleClass('active');
                 like(id);
+                tweets[i].isLiked = true;
             }
         })
 
@@ -428,7 +432,6 @@ async function view() {
     }
 
     let friends = await findTenFriends();
-    console.log(friends);
     for(let i = 0; i < friends.length; i++){
         let bar = `<a class="panel-block is-active">
                         <span class="panel-icon">
@@ -443,14 +446,9 @@ async function view() {
 
 view();
 $('#newtweet').on('click', handleNewButtonPress); 
-panel();
 
 /******* ****************************************** right panel *********************************************************/
 async function findTenFriends(){
     const response = await axiosInstance.get('/private/' + username + '/closest10');
     return response.data.result;
-}
-
-async function panel(){
-    
 }
