@@ -66,7 +66,7 @@ const renderTweet = function(tweet, id) {
                             </div>
                             <div class="column is-6">
                                 <button class="three-button" id="reply${id}">
-                                    <i class="fas fa-comment-dots"></i> Reply <span id="replycount${id}">(${tweet.replyCount})</span>
+                                    <i class="fas fa-comment-dots"></i> Reply
                                 </button>
                             </div>
                     </div>
@@ -111,7 +111,7 @@ const renderMyTweet = function(tweet, id){
                             </div>
                             <div class="column is-3">
                                 <button class="three-button" id="reply${id}">
-                                    <i class="fas fa-comment-dots"></i> Reply <span id="replycount${id}">(${tweet.replyCount})</span>
+                                    <i class="fas fa-comment-dots"></i> Reply 
                                 </button>
                             </div>
                             <div class="column is-3">
@@ -146,6 +146,23 @@ async function readTweets(id){
 }
 
 async function postTweets(){ 
+    // const userInfo = await axiosInstance.get('/private/' + currentuser);
+    // let UserKeys = Object.keys(userInfo.data.result);
+    // let haveTweet = false
+    // for (let i=0; i < UserKeys.length; i++){
+    //     if (UserKeys[i] == "tweet"){
+    //         haveTweet = true;
+    //     }
+    // }
+    // if (!haveTweet){
+    //     const response = await axiosInstance.post('/private/' + currentuser, {
+    //         data: {     
+    //             "tweet": {},
+
+    //         }   
+    //     });  
+    // }
+
     axiosInstance = axios.create({
         headers: { Authorization: `Bearer ${token}` },
         baseURL: `http://localhost:3000`
@@ -161,13 +178,15 @@ async function postTweets(){
                 "isMine": true,
                 "isLiked": false,
                 "replyCount":0,
-                "likeCount": 0,
+                "isLiked": new Array(0),
+                'likeCount':0,
                 "replies": [],
                 "createdAt": Date.now(),
                 //"updatedAt": Date.now(),
             
         }   
     });  
+    location.reload()
 }
 
 async function reply(id){
@@ -184,7 +203,7 @@ async function reply(id){
         "body": $("#readyreply").val(),
     });
     temp.replyCount += 1;
-    $(`#replycount${id}`).html(`(${temp.replyCount})`);
+    //$(`#replycount${id}`).html(`(${temp.replyCount})`);
     const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
         data: {
             "type": temp.type,
@@ -201,65 +220,6 @@ async function reply(id){
     });
 }
 
-async function like(id){
-    axiosInstance = axios.create({
-        headers: { Authorization: `Bearer ${token}` },
-        baseURL: `http://localhost:3000`
-    });
-    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
-    let temp = response.data.result;
-    if(!temp.isLiked){
-        deleteTweets(id);
-        temp.isLiked = true;
-        temp.likeCount += 1;
-        $(`#likecount${id}`).html(`(${temp.likeCount})`);
-        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
-            data: {
-                "type": temp.type,
-                "author": temp.author,
-                "body": temp.body,
-                "isMine": true,
-                "isLiked": temp.isLiked,
-                "replyCount":temp.replyCount,
-                "likeCount": temp.likeCount,
-                "replies": temp.replies,
-                "createdAt": temp.createdAt,
-                "updatedAt": temp.updatedAt,
-            }   
-        });
-        
-    }
-    
-}
-
-async function unlike(id){
-    axiosInstance = axios.create({
-        headers: { Authorization: `Bearer ${token}` },
-        baseURL: `http://localhost:3000`
-    });
-    const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
-    let temp = response.data.result;
-    if(temp.isLiked){
-        deleteTweets(id);
-        temp.isLiked = false;
-        temp.likeCount -= 1;
-        $(`#likecount${id}`).html(`(${temp.likeCount})`);
-        const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
-            data: {
-                "type": temp.type,
-                "author": temp.author,
-                "body": temp.body,
-                "isMine": true,
-                "isLiked": temp.isLiked,
-                "replyCount":temp.replyCount,
-                "likeCount": temp.likeCount,
-                "replies": temp.replies,
-                "createdAt": temp.createdAt,
-                "updatedAt": temp.updatedAt,
-            }   
-        });
-    }
-}
 
 async function deleteTweets(id){
     axiosInstance = axios.create({
@@ -356,35 +316,125 @@ async function view() {
 
     if(currentuser == username){
         for(let i = Object.keys(tweets).length - 1; i >= 0; i--){ 
+            if (tweets[i] != undefined){
             $root.append(renderMyTweet(tweets[i], i));  
+            }
         }
     }else{
         for(let i = Object.keys(tweets).length - 1; i >= 0; i--){ 
+            if (tweets[i] != undefined){
             $root.append(renderTweet(tweets[i], i)); 
+            }
         }    
     }
     
     for(let i = 0; i < Object.keys(tweets).length; i++){
         let id = i;
+        if (tweets[i] != undefined){
         let body = tweets[i].body;
+    
         let detail = await readTweets(id);
 
-        if(tweets[i].isLiked){
+        if(tweets[i].isLiked.includes(username)){
             $(`#like${id}`).toggleClass('active');
         }
-       
-        $(`#like${id}`).click(function(){                     
-            //$(`#like${id}`).toggleClass('active');              // indicate if user likes one tweet
-            if(tweets[i].isLiked){
-                $(`#like${id}`).toggleClass('active');
-                unlike(id);
-                tweets[i].isLiked = false;
-            }else{
-                $(`#like${id}`).toggleClass('active');
-                like(id);
-                tweets[i].isLiked = true;
+
+        if(tweets[i].isLiked.includes(username)){
+            $(`#like${id}`).on("click", myUnlike)
+        }
+        else{
+            $(`#like${id}`).on("click", myLike)
+        }
+
+        function myLike(){
+            $(`#like${id}`).toggleClass('active');
+            like(id);
+        }
+        function myUnlike(){
+            $(`#like${id}`).toggleClass('active');
+            unlike(id);
+        }
+    
+
+        async function like(id){
+            axiosInstance = axios.create({
+                headers: { Authorization: `Bearer ${token}` },
+                baseURL: `http://localhost:3000`
+            });
+            const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
+            let temp = response.data.result;
+            if(!temp.isLiked.includes(username)){
+                //deleteTweets(id);
+                temp.likeCount += 1;
+                temp.isLiked.push(username);
+                $(`#likecount${id}`).html(`(${temp.likeCount})`);
+                const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
+                    data: {
+                        "type": temp.type,
+                        "author": temp.author,
+                        "body": temp.body,
+                        "isMine": true,
+                        "isLiked": temp.isLiked,
+                        "replyCount":temp.replyCount,
+                        "likeCount": temp.likeCount,
+                        "replies": temp.replies,
+                        "createdAt": temp.createdAt,
+                        "updatedAt": temp.updatedAt,
+                    }   
+                });
+                
             }
-        })
+            $(`#like${id}`).unbind('click',myLike);
+            $(`#like${id}`).on('click',myUnlike);
+            
+        }
+        
+        async function unlike(id){
+            axiosInstance = axios.create({
+                headers: { Authorization: `Bearer ${token}` },
+                baseURL: `http://localhost:3000`
+            });
+            const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
+            let temp = response.data.result;
+            if(temp.isLiked.includes(username)){
+                //deleteTweets(id);
+                let index = temp.isLiked.indexOf(username);
+                temp.isLiked.splice(index, 1);
+                temp.likeCount -= 1;
+                $(`#likecount${id}`).html(`(${temp.likeCount})`);
+                const response1 = await axiosInstance.post('/private/' + currentuser + '/tweet/' + id, {
+                    data: {
+                        "type": temp.type,
+                        "author": temp.author,
+                        "body": temp.body,
+                        "isMine": true,
+                        "isLiked": temp.isLiked,
+                        "replyCount":temp.replyCount,
+                        "likeCount": temp.likeCount,
+                        "replies": temp.replies,
+                        "createdAt": temp.createdAt,
+                        "updatedAt": temp.updatedAt,
+                    }   
+                });
+            }
+            $(`#like${id}`).unbind('click',myUnlike);
+            $(`#like${id}`).on('click',myLike);
+        }
+    
+       
+        // $(`#like${id}`).click(function(){                     
+        //     //$(`#like${id}`).toggleClass('active');              // indicate if user likes one tweet
+        //     if(tweets[i].isLiked.includes(username)){
+        //         $(`#like${id}`).toggleClass('active');
+        //         unlike(id);
+        //         // let index = temp.isliked.indexOf(username);
+        //         // temp.isLiked.splice(index, 1);
+        //     }else{
+        //         $(`#like${id}`).toggleClass('active');
+        //         like(id);
+        //         // temp.isLiked.push(username);
+        //     }
+        // })
 
         // $(`#retweet${id}`).click(function(){                    // allow user to retweet their tweets
         //     let retweet_form = `
@@ -414,8 +464,10 @@ async function view() {
                 </div>
             `;
             $(reply_form).insertAfter(`#${id}`);
-            $('.reply').on('click', function(){
-                reply(id);
+            $('.reply').on('click',async function(){
+                await reply(id);
+                $(`#rpcard${id}`).remove();
+                location.reload()
             });
             $('#cancelreply').on('click', function(){
                 $(`#rpcard${id}`).remove();
@@ -436,7 +488,8 @@ async function view() {
 
         // allow user to edit their tweets   
         
-            $(`#edit${id}`).on('click', function(){                   
+            $(`#edit${id}`).on('click',  loadEdit);
+            function loadEdit(){
                 let form = `
                 <div class="card" id="card${id}">
                     <textarea id="underedit" class="textarea" maxlength="280" placeholder="${body}"></textarea>
@@ -445,18 +498,25 @@ async function view() {
                  </div>
                 `;
                 $(form).insertAfter(`#${id}`);
-                $('.update').on('click', function(){
-                    updateTweets(id);
+                $(`#edit${id}`).unbind('click',  loadEdit);
+                $('.update').on('click', async function(){
+                    await updateTweets(id);
+                    $(`#edit${id}`).on('click',  loadEdit);
+                    location.reload();
                 });
                 $('#canceledit').on('click', function(){
                     $(`#card${id}`).remove();
+                    $(`#edit${id}`).on('click',  loadEdit);
                 });
-                
-            });
 
             $(`#delete${id}`).on('click', function(){
                 deleteTweets(id);
+                location.reload();
             });
+        }
+            
+
+        }
         
 
     }
