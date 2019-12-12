@@ -64,24 +64,18 @@ function handleKeydownAutocomplete(e){
 }
 
 async function populateCityCountry(e){
-    var city = e.currentTarget.innerHTML
-    city = city.replace("<strong>","")
-    city = city.replace("</strong>","")
-    $("#city").val(city)
+    var cityname = e.currentTarget.innerHTML
+    cityname = cityname.replace("<strong>","")
+    cityname = cityname.replace("</strong>","")
+    $("#city").val(cityname)
+    var city = e.currentTarget.id
+    city = city.replace("item","")
     const location = await axios({
         method: 'GET',
         url: 'http://localhost:3000/example/location',
     });
     var arr = location.data.message
-    let val = e.target.value
-    var country
-    if(val!=""){
-        for (i = 0; i < arr.length; i++) {
-            if (arr[i].city.toUpperCase() == city.toUpperCase()) {
-                country=arr[i].country
-            }
-        }
-    }
+    var country = arr[city].country
     $("#country").val(country)
     $("#autocomplete").empty()
 }
