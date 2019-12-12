@@ -23,7 +23,7 @@ function init(){
     controls = new THREE.OrbitControls(camera, renderer.domElement );
     
     // disable rotate
-    controls.rotateSpeed = 0.1;
+    controls.rotateSpeed = 0.05;
     controls.zoomSpeed = 0.1;
     controls.panSpeed = 0.1;
 
@@ -278,7 +278,7 @@ function addUser(user,lat,lng,color,home){
 
         if (home){
           await sleep(2000);
-          flag.material.color.setHex(0x000000);
+          flag.material.color.setHex(0x6a0dad);
         }
         else{
         $(`#${userName}`).on('click', BackColor); 
