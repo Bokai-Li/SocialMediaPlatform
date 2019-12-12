@@ -196,7 +196,7 @@ async function reply(id){
     });
     const response = await axiosInstance.get('/private/' + currentuser + `/tweet/${id}`, {});
     let temp = response.data.result;
-    deleteTweets(id);
+    //deleteTweets(id);
     temp.replies.push({
         "author": username,
         "parent": id,
@@ -456,7 +456,7 @@ async function view() {
 
         // }); 
 
-        $(`#reply${id}`).click(function(){                    // allow user to reply to tweets
+        function loadreply(){                    // allow user to reply to tweets
             let reply_form = `
                 <div class="card" id="rpcard${id}">
                     <textarea id="readyreply" class="textarea" maxlength="280" placeholder="${body}"></textarea>
@@ -465,6 +465,7 @@ async function view() {
                 </div>
             `;
             $(reply_form).insertAfter(`#${id}`);
+            $(`#reply${id}`).unbind("click", loadreply);
             $('.reply').on('click',async function(){
                 await reply(id);
                 $(`#rpcard${id}`).remove();
@@ -473,7 +474,10 @@ async function view() {
             $('#cancelreply').on('click', function(){
                 $(`#rpcard${id}`).remove();
             });
-        }); 
+        }
+
+
+        $(`#reply${id}`).on("click", loadreply);
 
 
         
@@ -509,6 +513,8 @@ async function view() {
                     $(`#card${id}`).remove();
                     $(`#edit${id}`).on('click',  loadEdit);
                 });
+
+            }
 
             $(`#delete${id}`).on('click', function(){
                 deleteTweets(id);
