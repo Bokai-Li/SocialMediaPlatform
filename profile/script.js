@@ -174,7 +174,7 @@ const handlecancel = async function(){
     let profile = await readProfile();
     $(`#edit${username}`).replaceWith(renderProfile(profile));
     $(`#editbutton${username}`).on('click', function(){  
-        handleedit();
+        handleedit(profile);
         $('.updateButton').on('click', handleupdate);
         $('.cancelButton').on('click', handlecancel);  
     });
