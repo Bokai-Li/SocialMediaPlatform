@@ -339,7 +339,6 @@ async function view() {
         let id = i;
         let body = tweets[i].body;
         let detail = await readTweets(id);
-
         if(tweets[i].isLiked.includes(username)){
             $(`#like${id}`).toggleClass('active');
         }
