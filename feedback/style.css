@@ -142,6 +142,7 @@ a {
     padding: 10px;
     padding-left: 100px;
     margin: auto;
+    margin-top: 10px;
     width: 1000px;
 }
 
@@ -207,19 +208,11 @@ a {
     cursor: pointer;
 }
 
-.is-4 {
+.is-6 {
     text-align: center;
 }
 
 .is-3 {
-    text-align: center;
-}
-
-.is-2 {
-    text-align: center;
-}
-
-.is-1 {
     text-align: center;
 }
 
@@ -240,7 +233,7 @@ a {
     position: sticky;
     top: 0;
     overflow-y: auto;
-    height: 250px;
+    height: 400px;
 }
 
 #findfriend {
@@ -254,32 +247,14 @@ a {
     top: 10px;
 }
 
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
-
-.roundBorder {
-    border-radius: 50%;
-    border: 10px solid transparent;
-    padding: 15px;
-    border-color: white;
-}
-
-#root {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-
-.card {
+#begin {
     margin: auto;
     width: 800px;
+    height: 200px;
+    margin-top: 30px;
 }
 
-.button {
-    margin: 5px;
+#submit {
+    margin-top: 10px;
+
 }
